@@ -1,4 +1,5 @@
 import 'package:pokemon_trivia/data/source/remote/dto/pokemon_dto.dart';
+import 'package:pokemon_trivia/domain/model/pokemon.dart';
 
 class PokemonEntity {
   final int number;
@@ -19,6 +20,15 @@ class PokemonEntity {
       name: dto.name,
       frontSprite: dto.frontSprite,
       mainType: dto.mainType,
+    );
+  }
+
+  factory PokemonEntity.fromPokemon(Pokemon pokemon) {
+    return PokemonEntity(
+      number: pokemon.number,
+      name: pokemon.name,
+      frontSprite: pokemon.frontSprite,
+      mainType: pokemon.mainType,
     );
   }
 }

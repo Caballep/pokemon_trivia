@@ -34,4 +34,27 @@ class PokemonDao {
       );
     }).toList();
   }
+
+  Future<PokemonEntity?> getPokemonByNumber(int number) async {
+    final db = await pokemonDb.open();
+    final maps = await db.query(
+      'pokemons',
+      where: 'number = ?',
+      whereArgs: [number],
+      limit: 1,
+    );
+
+    if (maps.isEmpty) {
+      return null;
+    }
+
+    final map = maps.first;
+    return PokemonEntity(
+      number: map['number'] as int,
+      name: map['name'] as String,
+      frontSprite: map['frontSprite'] as String,
+      mainType: map['mainType'] as String,
+    );
+  }
+
 }

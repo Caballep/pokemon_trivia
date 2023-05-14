@@ -9,10 +9,11 @@ class PokemonRepository {
 
   PokemonRepository(this.pokemonDao, this.pokemonApi);
 
-  Future<void> fetchPokemon(int pokemonNumber) async {
+  Future<String> fetchPokemon(int pokemonNumber) async {
     final pokemonDto = await pokemonApi.fetchPokemon(pokemonNumber);
     final pokemonEntity = PokemonEntity.fromDto(pokemonDto);
     await pokemonDao.insertPokemon(pokemonEntity);
+    return pokemonEntity.name;
   }
 
   Future<List<Pokemon>> getAllPokemons() async {

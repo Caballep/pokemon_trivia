@@ -16,7 +16,7 @@ class PokemonDb {
       CREATE TABLE pokemons (
         number INTEGER PRIMARY KEY,
         name TEXT,
-        frontSprite TEXT,
+        frontSpriteUrl TEXT,
         mainType TEXT
       )
     ''');

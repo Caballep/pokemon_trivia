@@ -1,12 +1,12 @@
 import 'package:sqflite/sqflite.dart';
 
-import 'package:pokemon_trivia/data/source/db/entity/pokemon_entity.dart';
-import 'package:pokemon_trivia/data/source/db/pokemon_db.dart';
+import 'package:pokemon_trivia/data/source/local/db/entity/pokemon_entity.dart';
+import 'package:pokemon_trivia/data/source/local/db/pokemon_db.dart';
 
 class PokemonDao {
   final PokemonDb pokemonDb;
 
-  PokemonDao(this.pokemonDb);
+  PokemonDao({required this.pokemonDb});
 
   Future<void> insertPokemon(PokemonEntity pokemon) async {
     final db = await pokemonDb.open();
@@ -15,7 +15,7 @@ class PokemonDao {
       {
         'number': pokemon.number,
         'name': pokemon.name,
-        'frontSprite': pokemon.frontSprite,
+        'frontSpriteUrl': pokemon.frontSpriteUrl,
         'mainType': pokemon.mainType,
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -29,7 +29,7 @@ class PokemonDao {
       return PokemonEntity(
         number: map['number'] as int,
         name: map['name'] as String,
-        frontSprite: map['frontSprite'] as String,
+        frontSpriteUrl: map['frontSpriteUrl'] as String,
         mainType: map['mainType'] as String,
       );
     }).toList();
@@ -52,9 +52,8 @@ class PokemonDao {
     return PokemonEntity(
       number: map['number'] as int,
       name: map['name'] as String,
-      frontSprite: map['frontSprite'] as String,
+      frontSpriteUrl: map['frontSpriteUrl'] as String,
       mainType: map['mainType'] as String,
     );
   }
-
 }

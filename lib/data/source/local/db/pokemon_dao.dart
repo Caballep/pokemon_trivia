@@ -22,7 +22,7 @@ class PokemonDao {
     );
   }
 
-  Future<List<PokemonEntity>> getAllPokemons() async {
+  Future<List<PokemonEntity>> getPokemons() async {
     final db = await pokemonDb.open();
     final maps = await db.query('pokemons');
     return maps.map((map) {
@@ -55,5 +55,12 @@ class PokemonDao {
       frontSpriteUrl: map['frontSpriteUrl'] as String,
       mainType: map['mainType'] as String,
     );
+  }
+
+  Future<int> getPokemonsCount() async {
+    final db = await pokemonDb.open();
+    final result = await db.rawQuery('SELECT COUNT(*) FROM pokemons');
+    final count = Sqflite.firstIntValue(result);
+    return count ?? 0;
   }
 }

@@ -20,4 +20,20 @@ class PokemonApi {
       throw Exception('An error occurred while fetching pokemon $number');
     }
   }
+
+  Future<int> getPokemonCount() async {
+    final url = '$baseUrl/pokemon-species';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body) as Map<String, dynamic>;
+        final count = json['count'] as int;
+        return count;
+      } else {
+        throw Exception('Failed to retrieve Pokemon count');
+      }
+    } catch (e) {
+      throw Exception('An error occurred while fetching Pokemon count');
+    }
+  }
 }

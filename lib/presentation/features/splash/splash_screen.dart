@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    splashCubit.fetchPokemons();
+    splashCubit.verifyDataAndFetch();
     return Scaffold(
       body: BlocBuilder<SplashCubit, PokemonState>(
         bloc: splashCubit,
@@ -52,14 +52,14 @@ class SplashScreen extends StatelessWidget {
                 ],
               ),
             );
-          } else if (state is CompletedState) {
+          } else if (state is SplashLoadingCompleted) {
             Future.delayed(Duration.zero, () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (_) => Screen2()),
               );
             });
             return Container();
-          } else if (state is ErrorState) {
+          } else if (state is UnknownErrorState) {
             Future.delayed(Duration.zero, () {
               Navigator.of(context).pop();
             });
@@ -73,6 +73,7 @@ class SplashScreen extends StatelessWidget {
   }
 }
 
+// Temporal Screen
 class Screen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

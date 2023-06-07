@@ -4,7 +4,7 @@ import 'package:pokemon_trivia/core/utils/exception_handler.dart';
 import 'package:pokemon_trivia/data/repo/pokemon_repo.dart';
 import 'package:pokemon_trivia/data/source/local/db/pokemon_dao.dart';
 import 'package:pokemon_trivia/data/source/local/db/pokemon_db.dart';
-import 'package:pokemon_trivia/data/source/local/storage/image_precache.dart';
+import 'package:pokemon_trivia/data/source/local/storage/disk_cacher.dart';
 import 'package:pokemon_trivia/data/source/remote/api/pokemon_api.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/check_pokemons_up_to_date_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_pokemons_uc.dart';

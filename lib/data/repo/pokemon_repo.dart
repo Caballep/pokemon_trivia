@@ -1,7 +1,7 @@
 import 'package:pokemon_trivia/core/propagation/error.dart';
 import 'package:pokemon_trivia/core/utils/exception_handler.dart';
 import 'package:pokemon_trivia/core/propagation/result.dart';
-import 'package:pokemon_trivia/data/source/local/storage/image_precache.dart';
+import 'package:pokemon_trivia/data/source/local/storage/disk_cacher.dart';
 import 'package:pokemon_trivia/data/source/local/db/entity/pokemon_entity.dart';
 import 'package:pokemon_trivia/data/source/local/db/pokemon_dao.dart';
 import 'package:pokemon_trivia/data/source/remote/api/pokemon_api.dart';
@@ -23,10 +23,10 @@ class PokemonRepository {
         _diskCacher = diskCacher,
         _exceptionHandler = exceptionHandler;
 
-  /// It's important to mention that PokeApi doesn't provide Pokemon data as a
-  /// list, for instance multiple calls are need to be made. This is meant to
-  /// be used when the app launches, it will pull each available pokemon and sync
-  /// it with the local storage.
+  /// It's important to mention that [PokeApi] doesn't provide a [List] of
+  /// [PokemonEntity], for instance multiple calls are need to be made. This is
+  /// meant to be used when the app launches, it will pull each available pokemon
+  /// and sync it with the local storage.
   Future<Result<PokemonModel>> fetchPokemon(int pokemonNumber) async {
     try {
       final pokemonDto = await _pokemonApi.fetchPokemon(pokemonNumber);
@@ -41,14 +41,15 @@ class PokemonRepository {
     }
   }
 
-  /// PokemonApi will get new additions time to time, it is guarantee that the
+  /// [PokemonApi] will get new additions time to time, it is guarantee that the
   /// number of Pokemons will continue to increase but never decrease. Use this
   /// function to verify we are up to date.
   Future<Result<bool>> isPokemonDbUpToDate() async {
     try {
       final currentPokemonCount = await _pokemonDao.getPokemonsCount();
       final apiPokemonCount = await _pokemonApi.getPokemonCount();
-      final pokemonDbUpToDate = currentPokemonCount == apiPokemonCount;
+      // final pokemonDbUpToDate = currentPokemonCount == apiPokemonCount;
+      final pokemonDbUpToDate = false;
       return Result.success(pokemonDbUpToDate);
     } on Exception catch (e, stackTrace) {
       Error error = _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
@@ -56,7 +57,7 @@ class PokemonRepository {
     }
   }
 
-  /// Returns a [Future] that resolves to a list of Pokemon models.
+  /// Returns a [Future] that resolves to a [List] of [PokemonModel].
   Future<List<PokemonModel>> getPokemons() async {
     final pokemonEntities = await _pokemonDao.getPokemons();
     return pokemonEntities

@@ -3,7 +3,7 @@ import 'package:pokemon_trivia/core/propagation/result.dart';
 import 'package:pokemon_trivia/domain/model/pokemon_model.dart';
 
 class FetchPokemonsUseCase {
-  static const int totalPokemons = 35;
+  static const int totalPokemons = 10;
   final PokemonRepository pokemonRepository;
 
   FetchPokemonsUseCase({required this.pokemonRepository});

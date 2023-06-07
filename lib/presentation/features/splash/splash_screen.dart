@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_trivia/locator.dart';
+import 'package:pokemon_trivia/presentation/features/splash/widget/loading_pokemon_list.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_bloc.dart';
-import 'package:pokemon_trivia/presentation/shared/cached_image.dart';
-import 'package:pokemon_trivia/presentation/features/splash/loading_pokeball.dart';
+import 'package:pokemon_trivia/presentation/features/splash/widget/loading_pokeball.dart';
+import 'package:pokemon_trivia/presentation/features/splash/widget/wave_container.dart';
+import 'package:pokemon_trivia/presentation/shared/basic_dialog.dart';
 
 class SplashScreen extends StatelessWidget {
   final SplashCubit splashCubit = locator.get<SplashCubit>();
@@ -14,60 +17,102 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     splashCubit.verifyDataAndFetch();
     return Scaffold(
-      body: BlocBuilder<SplashCubit, PokemonState>(
-        bloc: splashCubit,
-        builder: (context, state) {
-          if (state is InitialState) {
-            return Center(
-              child: Container(),
-            );
-          } else if (state is NewPokemonNameState) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const LoadingPokeball(),
-                  const Text(
-                    "Loading data...",
-                    style: TextStyle(fontSize: 30),
+      body: Container(
+        color: Colors.white,
+        child: BlocBuilder<SplashCubit, SplashState>(
+          bloc: splashCubit,
+          builder: (context, state) {
+            if (state is SplashNetworkErrorState) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                showDialog(
+                  context: context,
+                  builder: (context) => BasicDialog(
+                    icon: Icons.signal_wifi_bad,
+                    iconColor: Colors.red,
+                    title: 'No internet connection',
+                    text:
+                        'Check your WIFI/Data and make sure you have internet connection',
+                    onConfirm: () {
+                      SystemNavigator.pop();
+                    },
                   ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                      height: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CachedImageWidget(
-                            imageUrl: state.splashPokemon.frontSpriteUrl,
-                            width: 90,
-                            height: 90,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            state.splashPokemon.name,
-                            style: const TextStyle(fontSize: 24),
-                          ),
-                        ],
-                      ))
-                ],
-              ),
+                );
+              });
+            }
+
+            if (state is SplashServerErrorState) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                showDialog(
+                  context: context,
+                  builder: (context) => BasicDialog(
+                    icon: Icons.cloud_off,
+                    iconColor: Colors.red,
+                    title: 'Unable to reach the server',
+                    text:
+                        'We are experiencing some issues on our end, please try again later',
+                    onConfirm: () {
+                      SystemNavigator.pop();
+                    },
+                  ),
+                );
+              });
+            }
+
+            if (state is SplashUnknownErrorState) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                showDialog(
+                  context: context,
+                  builder: (context) => BasicDialog(
+                    icon: Icons.cancel,
+                    iconColor: Colors.red,
+                    title: 'Something went wrong',
+                    text:
+                        'If you keep experience issues please contact support',
+                    onConfirm: () {
+                      SystemNavigator.pop();
+                    },
+                  ),
+                );
+              });
+            }
+
+            if (state is SplashLoadingCompletedState) {
+              Future.delayed(Duration.zero, () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Screen2()),
+                  (route) => false,
+                );
+              });
+            }
+
+            return Column(
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: WaveContainer(),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Container(),
+                ),
+                if (state is SplashInitialState ||
+                    state is SplashVerifyingState ||
+                    state is SplashOnNextPokemonState)
+                  const Flexible(
+                    flex: 1,
+                    child: LoadingPokeball(),
+                  ),
+                Flexible(
+                    flex: 2,
+                    child: state is SplashOnNextPokemonState
+                        ? LoadingPokemonList(
+                            splashPokemonList: state.splashPokemons)
+                        : Container()),
+              ],
             );
-          } else if (state is SplashLoadingCompleted) {
-            Future.delayed(Duration.zero, () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => Screen2()),
-              );
-            });
-            return Container();
-          } else if (state is UnknownErrorState) {
-            Future.delayed(Duration.zero, () {
-              Navigator.of(context).pop();
-            });
-            return Container();
-          } else {
-            return Container();
-          }
-        },
+          },
+        ),
       ),
     );
   }

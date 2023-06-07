@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LoadingPokeball extends StatefulWidget {
-  const LoadingPokeball({Key? key}) : super(key: key);
+  const LoadingPokeball({super.key});
 
   @override
   _LoadingPokeballState createState() => _LoadingPokeballState();
@@ -36,19 +36,28 @@ class _LoadingPokeballState extends State<LoadingPokeball>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, child) {
-        return Transform.rotate(
-          angle: _animationController.value * 2 * 3.14159,
-          child: child,
-        );
-      },
-      child: SizedBox(
-        width: 100,
-        height: 100,
-        child: Image.asset('assets/images/pokeball.png'),
+    return Column(children: [
+      const SizedBox(height: 10),
+      AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Transform.rotate(
+            angle: _animationController.value * 2 * 3.14159,
+            child: child,
+          );
+        },
+        child: SizedBox(
+          width: 100,
+          height: 100,
+          child: Image.asset('assets/images/pokeball.png'),
+        ),
       ),
-    );
+      const SizedBox(height: 10),
+      const Text(
+        "Loading",
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(height: 10),
+    ]);
   }
 }

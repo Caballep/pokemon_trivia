@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/check_pokemons_up_to_date_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_pokemons_uc.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_data.dart';
@@ -10,7 +9,6 @@ class SplashCubit extends Cubit<SplashState> {
   final CheckPokemonsUpToDateUC _checkPokemonsUpToDateUC;
   late List<SplashPokemon> _splashPokemonList;
 
-  Logger logger = Logger();
   SplashCubit({
     required FetchPokemonsUseCase fetchPokemonsUseCase,
     required CheckPokemonsUpToDateUC checkPokemonsUpToDateUC,
@@ -21,19 +19,15 @@ class SplashCubit extends Cubit<SplashState> {
   }
 
   Future<void> verifyDataAndFetch() async {
-    logger.d("verifyDataAndFetch()");
     emit(SplashVerifyingState());
     final isPokemonsUpToDate = await _checkPokemonsUpToDateUC.invoke();
     if (isPokemonsUpToDate.isSuccess) {
-      logger.d("isPokemonsUpToDate isSuccess");
       if (isPokemonsUpToDate.data == true) {
-        logger.d("isPokemonsUpToDate.data == true");
         emit(SplashLoadingCompletedState());
         return;
       }
       fetchPokemonData();
     } else {
-      logger.d("isPokemonsUpToDate onError");
       _handleError(isPokemonsUpToDate.error);
     }
   }

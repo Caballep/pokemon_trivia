@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_trivia/locator.dart';
-import 'package:pokemon_trivia/presentation/features/splash/splash_screen.dart';
+import 'package:pokemon_trivia/presentation/features/tos/tos_screen.dart';
 
 void main() {
   setupLocator();
@@ -12,8 +12,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SplashScreen()
-    );
+    return const MaterialApp(home: TosScreen());
   }
 }

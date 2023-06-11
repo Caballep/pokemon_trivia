@@ -36,7 +36,8 @@ class PokemonRepository {
       final pokemonModel = PokemonModel.fromPokemonEntity(pokemonEntity);
       return Result.success(pokemonModel);
     } on Exception catch (e, stackTrace) {
-      Error error = _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
+      RepoError error =
+          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
       return Result.error(error);
     }
   }
@@ -52,7 +53,8 @@ class PokemonRepository {
       final pokemonDbUpToDate = false;
       return Result.success(pokemonDbUpToDate);
     } on Exception catch (e, stackTrace) {
-      Error error = _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
+      RepoError error =
+          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
       return Result.error(error);
     }
   }

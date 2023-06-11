@@ -11,11 +11,12 @@ import 'package:pokemon_trivia/presentation/shared/basic_dialog.dart';
 class SplashScreen extends StatelessWidget {
   final SplashCubit splashCubit = locator.get<SplashCubit>();
 
-  SplashScreen({Key? key}) : super(key: key);
+  SplashScreen({Key? key}) : super(key: key) {
+    splashCubit.verifyDataAndFetch();
+  }
 
   @override
   Widget build(BuildContext context) {
-    splashCubit.verifyDataAndFetch();
     return Scaffold(
       body: Container(
         color: Colors.white,

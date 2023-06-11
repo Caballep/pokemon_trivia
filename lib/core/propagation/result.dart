@@ -2,7 +2,7 @@ import 'package:pokemon_trivia/core/propagation/error.dart';
 
 class Result<T> {
   final T? data;
-  final Error? error;
+  final RepoError? error;
 
   Result._(this.data, this.error);
 
@@ -10,7 +10,7 @@ class Result<T> {
     return Result._(data, null);
   }
 
-  factory Result.error(Error error) {
+  factory Result.error(RepoError error) {
     return Result._(null, error);
   }
 

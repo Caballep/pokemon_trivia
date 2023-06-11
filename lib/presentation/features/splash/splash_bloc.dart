@@ -1,17 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/check_pokemons_up_to_date_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_pokemons_uc.dart';
+import 'package:pokemon_trivia/domain/use_case/pokemon/is_tos_accepted_uc.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_data.dart';
 import 'package:pokemon_trivia/core/propagation/error.dart';
 
 class SplashCubit extends Cubit<SplashState> {
-  final FetchPokemonsUseCase _fetchPokemonsUseCase;
+  final FetchPokemonsUC _fetchPokemonsUseCase;
   final CheckPokemonsUpToDateUC _checkPokemonsUpToDateUC;
   late List<SplashPokemon> _splashPokemonList;
 
   SplashCubit({
-    required FetchPokemonsUseCase fetchPokemonsUseCase,
+    required FetchPokemonsUC fetchPokemonsUseCase,
     required CheckPokemonsUpToDateUC checkPokemonsUpToDateUC,
+    required IsTosAcceptedUC isTosAcceptedUC,
   })  : _fetchPokemonsUseCase = fetchPokemonsUseCase,
         _checkPokemonsUpToDateUC = checkPokemonsUpToDateUC,
         super(SplashInitialState()) {
@@ -55,12 +57,12 @@ class SplashCubit extends Cubit<SplashState> {
     _splashPokemonList.insert(0, splashPokemon);
   }
 
-  void _handleError(Error? error) {
-    if (error == Error.noInternet || error == Error.genericNetwork) {
+  void _handleError(RepoError? error) {
+    if (error == RepoError.noInternet || error == RepoError.genericNetwork) {
       emit(SplashNetworkErrorState());
       return;
     }
-    if (error == Error.timeOut || error == Error.serverIssue) {
+    if (error == RepoError.timeOut || error == RepoError.serverIssue) {
       emit(SplashServerErrorState());
       return;
     }

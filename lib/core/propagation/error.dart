@@ -1,4 +1,4 @@
-enum Error {
+enum RepoError {
   // Network:
   genericNetwork,
   noInternet,

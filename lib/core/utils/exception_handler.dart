@@ -13,37 +13,37 @@ class ExceptionHandler {
   ExceptionHandler(this._logger);
 
   /// Handles all the possible exceptions, logs the error and stack trace, finally
-  /// returns a more meaningful [Error] for higher layers.
-  Error handleExceptionAndGetError(Exception e, StackTrace stackTrace) {
-    Error error;
+  /// returns a more meaningful [RepoError] for higher layers.
+  RepoError handleExceptionAndGetError(Exception e, StackTrace stackTrace) {
+    RepoError error;
 
     if (e is HttpException) {
-      error = Error.noInternet;
+      error = RepoError.noInternet;
     }
 
     if (e is ClientException) {
       final code = e.statusCode!;
 
       if (code == HttpStatus.notFound || code == HttpStatus.badRequest) {
-        error = Error.genericNetwork;
+        error = RepoError.genericNetwork;
       }
 
       if (code == HttpStatus.unauthorized ||
           code == HttpStatus.forbidden ||
           code == HttpStatus.internalServerError) {
-        error = Error.serverIssue;
+        error = RepoError.serverIssue;
       }
     }
 
     if (e is SocketException) {
-      error = Error.genericNetwork;
+      error = RepoError.genericNetwork;
     }
 
     if (e is TimeoutException) {
-      error = Error.timeOut;
+      error = RepoError.timeOut;
     }
 
-    error = Error.unknown;
+    error = RepoError.unknown;
 
     _logger.e('Error dispatched: $error', e, stackTrace);
     return error;

@@ -1,5 +1,3 @@
-import 'package:pokemon_trivia/presentation/features/tos/tos_acceptance_device_data.dart';
-
 import '../../data/source/local/storage/shared_pref/prefs/tos_acceptance_device_pref.dart';
 
 class TosAcceptanceDeviceModel {

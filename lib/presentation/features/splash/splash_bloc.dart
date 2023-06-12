@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/check_pokemons_up_to_date_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_pokemons_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/is_tos_accepted_uc.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_data.dart';
@@ -7,31 +6,14 @@ import 'package:pokemon_trivia/core/propagation/error.dart';
 
 class SplashCubit extends Cubit<SplashState> {
   final FetchPokemonsUC _fetchPokemonsUseCase;
-  final CheckPokemonsUpToDateUC _checkPokemonsUpToDateUC;
   late List<SplashPokemon> _splashPokemonList;
 
   SplashCubit({
     required FetchPokemonsUC fetchPokemonsUseCase,
-    required CheckPokemonsUpToDateUC checkPokemonsUpToDateUC,
     required IsTosAcceptedUC isTosAcceptedUC,
   })  : _fetchPokemonsUseCase = fetchPokemonsUseCase,
-        _checkPokemonsUpToDateUC = checkPokemonsUpToDateUC,
         super(SplashInitialState()) {
     _splashPokemonList = List.empty(growable: true);
-  }
-
-  Future<void> verifyDataAndFetch() async {
-    emit(SplashVerifyingState());
-    final isPokemonsUpToDate = await _checkPokemonsUpToDateUC.invoke();
-    if (isPokemonsUpToDate.isSuccess) {
-      if (isPokemonsUpToDate.data == true) {
-        emit(SplashLoadingCompletedState());
-        return;
-      }
-      fetchPokemonData();
-    } else {
-      _handleError(isPokemonsUpToDate.error);
-    }
   }
 
   Future<void> fetchPokemonData() async {
@@ -42,9 +24,12 @@ class SplashCubit extends Cubit<SplashState> {
           _updateSplashPokemonList(
               SplashPokemon.fromPokemonModel(pokemonModel));
           emit(SplashOnNextPokemonState(_splashPokemonList));
+        } else {
+          // Null Pokemon, not a breaking flow, ignore
         }
       } else {
         _handleError(pokemonModelResult.error);
+        return;
       }
     }
     emit(SplashLoadingCompletedState());

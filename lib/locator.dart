@@ -12,7 +12,6 @@ import 'package:pokemon_trivia/data/source/local/storage/disk_cacher.dart';
 import 'package:pokemon_trivia/data/source/local/storage/shared_pref/shared_pref.dart';
 import 'package:pokemon_trivia/data/source/remote/api/ipify_api.dart';
 import 'package:pokemon_trivia/data/source/remote/api/pokemon_api.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/check_pokemons_up_to_date_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_pokemons_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/is_tos_accepted_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/save_tos_acceptance_device_data_uc.dart';
@@ -49,8 +48,6 @@ void setupLocator() {
   // UseCases
   locator.registerSingleton(
       FetchPokemonsUC(pokemonRepository: locator.get<PokemonRepository>()));
-  locator.registerSingleton(CheckPokemonsUpToDateUC(
-      pokemonRepository: locator.get<PokemonRepository>()));
   locator.registerSingleton(
       IsTosAcceptedUC(servicePrivacyRepository: locator.get()));
   locator.registerSingleton(SaveTosAcceptanceDeviceDataUC(
@@ -59,7 +56,6 @@ void setupLocator() {
   // Blocs and Cubits
   locator.registerFactory(() => SplashCubit(
       fetchPokemonsUseCase: locator.get<FetchPokemonsUC>(),
-      checkPokemonsUpToDateUC: locator.get<CheckPokemonsUpToDateUC>(),
       isTosAcceptedUC: locator.get()));
   locator.registerFactory(() => TosCubit(
       isTosAcceptedUC: locator.get(),

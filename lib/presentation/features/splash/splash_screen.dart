@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
   final SplashCubit splashCubit = locator.get<SplashCubit>();
 
   SplashScreen({Key? key}) : super(key: key) {
-    splashCubit.verifyDataAndFetch();
+    splashCubit.fetchPokemonData();
   }
 
   @override

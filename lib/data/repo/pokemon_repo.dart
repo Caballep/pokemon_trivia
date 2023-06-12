@@ -42,15 +42,36 @@ class PokemonRepository {
     }
   }
 
-  /// [PokemonApi] will get new additions time to time, it is guarantee that the
-  /// number of Pokemons will continue to increase but never decrease. Use this
+  Future<Result<int>> getLocalPokemonCount() async {
+     try {
+      final localPokemonCount = await _pokemonDao.getPokemonsCount();
+      return Result.success(localPokemonCount);
+    } on Exception catch (e, stackTrace) {
+      RepoError error =
+          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
+      return Result.error(error);
+    }
+  } 
+
+  Future<Result<int>> getRemotePokemonCount() async {
+     try {
+      final remotePokemonCount = await _pokemonApi.getPokemonCount();
+      return Result.success(remotePokemonCount);
+    } on Exception catch (e, stackTrace) {
+      RepoError error =
+          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
+      return Result.error(error);
+    }
+  } 
+
+  /// The API that [PokemonApi] consumes will get new additions time to time,
+  /// for instance the number of Pokemons will continue to increase. Use this
   /// function to verify we are up to date.
   Future<Result<bool>> isPokemonDbUpToDate() async {
     try {
       final currentPokemonCount = await _pokemonDao.getPokemonsCount();
       final apiPokemonCount = await _pokemonApi.getPokemonCount();
-      // final pokemonDbUpToDate = currentPokemonCount == apiPokemonCount;
-      final pokemonDbUpToDate = false;
+      final pokemonDbUpToDate = currentPokemonCount == apiPokemonCount;
       return Result.success(pokemonDbUpToDate);
     } on Exception catch (e, stackTrace) {
       RepoError error =

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 
 class LoadingPokeball extends StatefulWidget {
   const LoadingPokeball({super.key});
@@ -53,9 +54,11 @@ class _LoadingPokeballState extends State<LoadingPokeball>
         ),
       ),
       const SizedBox(height: 10),
-      const Text(
-        "Loading",
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      const RetroText(
+        text: 'Loading',
+        retroTextSize: RetroTextSize.medium,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
       ),
       const SizedBox(height: 10),
     ]);

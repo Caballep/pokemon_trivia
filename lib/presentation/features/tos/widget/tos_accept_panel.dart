@@ -17,12 +17,14 @@ class TosAcceptPanel extends StatefulWidget {
 class _TosAcceptPanelState extends State<TosAcceptPanel> {
   late bool _termsReaded;
   late bool _isChecked;
+  late bool _acceptingTerms;
 
   @override
   void initState() {
     super.initState();
     _termsReaded = widget.termsReaded;
     _isChecked = false;
+    _acceptingTerms = false;
   }
 
   @override
@@ -90,35 +92,46 @@ class _TosAcceptPanelState extends State<TosAcceptPanel> {
             ],
           ),
           SizedBox(
-            height: 18,
+            height: 22,
           ),
           Align(
             alignment: Alignment.centerRight,
-            child: Container(
-              height: 44,
-              child: ElevatedButton(
-                  onPressed: _isChecked
-                      ? () {
-                          widget.onTermsAcceptedCallback();
-                        }
-                      : null,
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.disabled)) {
-                          return Colors.grey[600]!;
-                        }
-                        return Colors.blue;
-                      },
-                    ),
+            child: ElevatedButton(
+                onPressed: _isChecked
+                    ? () {
+                        widget.onTermsAcceptedCallback();
+                        _acceptingTerms = true;
+                      }
+                    : null,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.disabled)) {
+                        return Colors.grey[600]!;
+                      }
+                      return Colors.blue;
+                    },
                   ),
-                  child: Text(
-                    'Accept',
-                    style: TextStyle(
-                      fontSize: 22,
-                    ),
-                  )),
-            ),
+                ),
+                child: Container(
+                    alignment: Alignment.center,
+                    height: 50,
+                    width: 80,
+                    child: _acceptingTerms
+                        ? Container(
+                            width: 25,
+                            height: 25,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 3,
+                            ),
+                          )
+                        : Text(
+                            'ACCEPT',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ))),
           ),
         ],
       ),

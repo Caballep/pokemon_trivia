@@ -31,7 +31,7 @@ class FetchPokemonsUC {
     // TODO: Remove this and uncomment the above 2 lines for release/production
     // This is to avoid overload the PokeApi and get the IP banned.
     final nextPokemonNumber = 11;
-    final lastPokemonNumber = 25;
+    final lastPokemonNumber = 13;
 
     for (int i = nextPokemonNumber; i <= lastPokemonNumber + 1; i++) {
       final pokemon = await pokemonRepository.fetchPokemon(i);

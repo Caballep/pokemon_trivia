@@ -63,4 +63,11 @@ class PokemonDao {
     final count = Sqflite.firstIntValue(result);
     return count ?? 0;
   }
+
+  Future<List<String>> getPokemonTypes() async {
+    final db = await pokemonDb.open();
+    final result = await db.rawQuery('SELECT DISTINCT mainType FROM pokemons');
+    final types = result.map((row) => row['mainType'] as String).toList();
+    return types;
+  }
 }

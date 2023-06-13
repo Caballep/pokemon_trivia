@@ -43,7 +43,7 @@ class PokemonRepository {
   }
 
   Future<Result<int>> getLocalPokemonCount() async {
-     try {
+    try {
       final localPokemonCount = await _pokemonDao.getPokemonsCount();
       return Result.success(localPokemonCount);
     } on Exception catch (e, stackTrace) {
@@ -51,28 +51,12 @@ class PokemonRepository {
           _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
       return Result.error(error);
     }
-  } 
+  }
 
   Future<Result<int>> getRemotePokemonCount() async {
-     try {
+    try {
       final remotePokemonCount = await _pokemonApi.getPokemonCount();
       return Result.success(remotePokemonCount);
-    } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
-    }
-  } 
-
-  /// The API that [PokemonApi] consumes will get new additions time to time,
-  /// for instance the number of Pokemons will continue to increase. Use this
-  /// function to verify we are up to date.
-  Future<Result<bool>> isPokemonDbUpToDate() async {
-    try {
-      final currentPokemonCount = await _pokemonDao.getPokemonsCount();
-      final apiPokemonCount = await _pokemonApi.getPokemonCount();
-      final pokemonDbUpToDate = currentPokemonCount == apiPokemonCount;
-      return Result.success(pokemonDbUpToDate);
     } on Exception catch (e, stackTrace) {
       RepoError error =
           _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
@@ -81,20 +65,43 @@ class PokemonRepository {
   }
 
   /// Returns a [Future] that resolves to a [List] of [PokemonModel].
-  Future<List<PokemonModel>> getPokemons() async {
-    final pokemonEntities = await _pokemonDao.getPokemons();
-    return pokemonEntities
-        .map((e) => PokemonModel.fromPokemonEntity(e))
-        .toList();
+  Future<Result<List<PokemonModel>>> getPokemons() async {
+    try {
+      final pokemonEntities = await _pokemonDao.getPokemons();
+      final pokemons = pokemonEntities
+          .map((e) => PokemonModel.fromPokemonEntity(e))
+          .toList();
+      return Result.success(pokemons);
+    } on Exception catch (e, stackTrace) {
+      RepoError error =
+          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
+      return Result.error(error);
+    }
   }
 
-  Future<PokemonModel?> getPokemon(int pokemonNumber) async {
-    final pokemonEntity = await _pokemonDao.getPokemonByNumber(pokemonNumber);
+  Future<Result<PokemonModel>> getPokemon(int pokemonNumber) async {
+    try {
+      final pokemonEntity = await _pokemonDao.getPokemonByNumber(pokemonNumber);
+      if (pokemonEntity != null) {
+        return Result.success(PokemonModel.fromPokemonEntity(pokemonEntity));
+      } else {
+        throw Exception();
+      }
+    } on Exception catch (e, stackTrace) {
+      RepoError error =
+          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
+      return Result.error(error);
+    }
+  }
 
-    if (pokemonEntity != null) {
-      return PokemonModel.fromPokemonEntity(pokemonEntity);
-    } else {
-      return null;
+  Future<Result<List<String>>> getPokemonTypes() async {
+    try {
+      final pokemonTypes = await _pokemonDao.getPokemonTypes();
+      return Result.success(pokemonTypes);
+    } on Exception catch (e, stackTrace) {
+      RepoError error =
+          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
+      return Result.error(error);
     }
   }
 }

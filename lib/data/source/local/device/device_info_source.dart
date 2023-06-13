@@ -22,19 +22,19 @@ class DeviceInfoSource {
       if (Platform.isAndroid) {
         AndroidDeviceInfo androidInfo = await _deviceInfoPlugin.androidInfo;
         deviceInfoData = DeviceInfoData(
-          model: androidInfo.model ?? '',
-          name: androidInfo.device ?? '',
-          osName: androidInfo.version.baseOS ?? '',
-          osVersion: androidInfo.version.release ?? '',
+          model: androidInfo.model,
+          name: androidInfo.device,
+          osName: androidInfo.version.baseOS ?? 'android',
+          osVersion: androidInfo.version.release,
           ip: await _getIP(),
         );
       } else if (Platform.isIOS) {
         IosDeviceInfo iosInfo = await _deviceInfoPlugin.iosInfo;
         deviceInfoData = DeviceInfoData(
-          model: iosInfo.model ?? '',
-          name: iosInfo.name ?? '',
-          osName: iosInfo.systemName ?? '',
-          osVersion: iosInfo.systemVersion ?? '',
+          model: iosInfo.model,
+          name: iosInfo.name,
+          osName: iosInfo.systemName,
+          osVersion: iosInfo.systemVersion,
           ip: await _getIP(),
         );
       }

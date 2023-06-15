@@ -14,10 +14,20 @@ class PokemonDb {
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE pokemons (
-        number INTEGER PRIMARY KEY,
+        number INTEGER PRIMARY KEY, 
         name TEXT,
         frontSpriteUrl TEXT,
         mainType TEXT
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE generations (
+        code TEXT,
+        startsWith INTEGER,
+        endsWith INTEGER,
+        mainRegionName TEXT,
+        accessState INTEGER DEFAULT 1
       )
     ''');
   }

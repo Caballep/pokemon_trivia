@@ -1,23 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_pokemons_uc.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/is_tos_accepted_uc.dart';
+import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_app_initial_data.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_data.dart';
 import 'package:pokemon_trivia/core/propagation/error.dart';
 
 class SplashCubit extends Cubit<SplashState> {
-  final FetchPokemonsUC _fetchPokemonsUseCase;
+  final FetchInitialDataAndGetPokemonsUC _fetchInitialDataAndGetPokemonsUC;
   late List<SplashPokemon> _splashPokemonList;
 
   SplashCubit({
-    required FetchPokemonsUC fetchPokemonsUseCase,
-    required IsTosAcceptedUC isTosAcceptedUC,
-  })  : _fetchPokemonsUseCase = fetchPokemonsUseCase,
+    required FetchInitialDataAndGetPokemonsUC fetchInitialDataAndGetPokemonsUC,
+  })  : _fetchInitialDataAndGetPokemonsUC = fetchInitialDataAndGetPokemonsUC,
         super(SplashInitialState()) {
     _splashPokemonList = List.empty(growable: true);
   }
 
   Future<void> fetchPokemonData() async {
-    await for (final pokemonModelResult in _fetchPokemonsUseCase.invoke()) {
+    await for (final pokemonModelResult
+        in _fetchInitialDataAndGetPokemonsUC.invoke()) {
       if (pokemonModelResult.isSuccess) {
         final pokemonModel = pokemonModelResult.data;
         if (pokemonModel != null) {

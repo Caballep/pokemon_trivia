@@ -29,7 +29,7 @@ class PokemonRepository {
   /// and sync it with the local storage.
   Future<Result<PokemonModel>> fetchPokemon(int pokemonNumber) async {
     try {
-      final pokemonDto = await _pokemonApi.fetchPokemon(pokemonNumber);
+      final pokemonDto = await _pokemonApi.getPokemon(pokemonNumber);
       await _diskCacher.cacheImage(pokemonDto.frontSpriteUrl);
       final pokemonEntity = PokemonEntity.fromDto(pokemonDto);
       await _pokemonDao.insertPokemon(pokemonEntity);
@@ -104,4 +104,5 @@ class PokemonRepository {
       return Result.error(error);
     }
   }
+
 }

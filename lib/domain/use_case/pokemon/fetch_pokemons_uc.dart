@@ -1,41 +1,39 @@
+import 'package:pokemon_trivia/core/propagation/error.dart';
+import 'package:pokemon_trivia/data/repo/generation_repo.dart';
 import 'package:pokemon_trivia/data/repo/pokemon_repo.dart';
 import 'package:pokemon_trivia/core/propagation/result.dart';
+import 'package:pokemon_trivia/domain/model/generation_model.dart';
 import 'package:pokemon_trivia/domain/model/pokemon_model.dart';
 
 class FetchPokemonsUC {
-  final PokemonRepository pokemonRepository;
+  final PokemonRepository _pokemonRepository;
+  final GenerationRepository _generationRepository;
 
-  FetchPokemonsUC({required this.pokemonRepository});
+  FetchPokemonsUC(
+      {required PokemonRepository pokemonRepository,
+      required GenerationRepository generationRepository})
+      : _pokemonRepository = pokemonRepository,
+        _generationRepository = generationRepository;
 
   /// This function will only try to fetch Pokemons only if there is new Pokemon
   /// available in the remote.
-  Stream<Result<PokemonModel>> invoke() async* {
-    final localPokemonCountResult =
-        await pokemonRepository.getLocalPokemonCount();
-    final remotePokemonCountResult =
-        await pokemonRepository.getRemotePokemonCount();
+  Stream<Result<PokemonModel>> invoke(String generationCode) async* {
+    final generation = await _generationRepository.getGeneration(generationCode);
 
-    if (localPokemonCountResult.isError) {
-      yield Result.error(localPokemonCountResult.error!);
+    if (generation.data == null) {
+      yield Result.error(RepoError.unknown);
       return;
     }
 
-    if (remotePokemonCountResult.isError) {
-      yield Result.error(remotePokemonCountResult.error!);
-      return;
-    }
+    final firstPokemon = generation.data!.startsWith;
+    final lastPokemon = generation.data!.endsWith;
 
-    // final nextPokemonNumber = localPokemonCountResult.data!;
-    // final lastPokemonNumber = remotePokemonCountResult.data!;
-
-    // TODO: Remove this and uncomment the above 2 lines for release/production
-    // This is to avoid overload the PokeApi and get the IP banned.
-    final nextPokemonNumber = 11;
-    final lastPokemonNumber = 13;
-
-    for (int i = nextPokemonNumber; i <= lastPokemonNumber + 1; i++) {
-      final pokemon = await pokemonRepository.fetchPokemon(i);
+    for (int i = firstPokemon; i <= lastPokemon + 1; i++) {
+      final pokemon = await _pokemonRepository.fetchPokemon(i);
       yield pokemon;
     }
+
+    _generationRepository.updateGenerationAccessState(
+        generation.data!.code, GenerationAccessState.pokemonsFetched);
   }
 }

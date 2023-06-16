@@ -17,8 +17,8 @@ import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_app_initial_data.da
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_generations_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_pokemons_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/get_generations_uc.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/is_tos_accepted_uc.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/save_tos_acceptance_device_data_uc.dart';
+import 'package:pokemon_trivia/domain/use_case/tos/is_tos_accepted_uc.dart';
+import 'package:pokemon_trivia/domain/use_case/tos/save_tos_acceptance_device_data_uc.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_bloc.dart';
 import 'package:pokemon_trivia/presentation/features/tos/tos_bloc.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/is_tos_accepted_uc.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/save_tos_acceptance_device_data_uc.dart';
+import 'package:pokemon_trivia/domain/use_case/tos/is_tos_accepted_uc.dart';
+import 'package:pokemon_trivia/domain/use_case/tos/save_tos_acceptance_device_data_uc.dart';
 
 class TosCubit extends Cubit<TosState> {
   final IsTosAcceptedUC _isTosAcceptedUC;

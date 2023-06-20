@@ -1,6 +1,6 @@
 import 'package:pokemon_trivia/core/propagation/error.dart';
 import 'package:pokemon_trivia/core/propagation/result.dart';
-import 'package:pokemon_trivia/core/utils/exception_handler.dart';
+import 'package:pokemon_trivia/core/helpers/exception_handler.dart';
 import 'package:pokemon_trivia/data/source/local/device/device_info_source.dart';
 import 'package:pokemon_trivia/data/source/local/storage/shared_pref/prefs/tos_acceptance_device_pref.dart';
 import 'package:pokemon_trivia/data/source/local/storage/shared_pref/shared_pref.dart';

@@ -8,8 +8,7 @@ class LoadingPokeball extends StatefulWidget {
   _LoadingPokeballState createState() => _LoadingPokeballState();
 }
 
-class _LoadingPokeballState extends State<LoadingPokeball>
-    with SingleTickerProviderStateMixin {
+class _LoadingPokeballState extends State<LoadingPokeball> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
   @override
@@ -54,7 +53,7 @@ class _LoadingPokeballState extends State<LoadingPokeball>
         ),
       ),
       const SizedBox(height: 10),
-      const RetroText(
+      RetroText(
         text: 'Loading',
         retroTextSize: RetroTextSize.medium,
         fontWeight: FontWeight.bold,

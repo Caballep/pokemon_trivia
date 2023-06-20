@@ -1,8 +1,8 @@
 import 'package:device_info/device_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:pokemon_trivia/core/utils/date_time_helper.dart';
-import 'package:pokemon_trivia/core/utils/exception_handler.dart';
+import 'package:pokemon_trivia/core/helpers/date_time_helper.dart';
+import 'package:pokemon_trivia/core/helpers/exception_handler.dart';
 import 'package:pokemon_trivia/data/repo/generation_repo.dart';
 import 'package:pokemon_trivia/data/repo/pokemon_repo.dart';
 import 'package:pokemon_trivia/data/repo/service_privacy_repo.dart';

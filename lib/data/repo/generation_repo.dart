@@ -1,6 +1,6 @@
 import 'package:pokemon_trivia/core/propagation/error.dart';
 import 'package:pokemon_trivia/core/propagation/result.dart';
-import 'package:pokemon_trivia/core/utils/exception_handler.dart';
+import 'package:pokemon_trivia/core/helpers/exception_handler.dart';
 import 'package:pokemon_trivia/data/source/local/db/entity/generation_entity.dart';
 import 'package:pokemon_trivia/data/source/local/db/pokemon_dao.dart';
 import 'package:pokemon_trivia/data/source/remote/api/pokemon_api.dart';

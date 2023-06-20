@@ -1,5 +1,5 @@
 import 'package:pokemon_trivia/core/propagation/result.dart';
-import 'package:pokemon_trivia/core/utils/date_time_helper.dart';
+import 'package:pokemon_trivia/core/helpers/date_time_helper.dart';
 import 'package:pokemon_trivia/data/repo/service_privacy_repo.dart';
 
 class SaveTosAcceptanceDeviceDataUC {

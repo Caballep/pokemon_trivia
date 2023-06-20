@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart' as gf;
+import 'package:pokemon_trivia/presentation/utils/media_query_util.dart';
 
-enum RetroTextSize { huge, big, medium, small, tiny }
+enum RetroTextSize { gigantic, huge, big, medium, small, tiny }
 
 class RetroText extends StatelessWidget {
   final String text;
@@ -9,7 +10,9 @@ class RetroText extends StatelessWidget {
   final FontWeight fontWeight;
   final Color color;
 
-  const RetroText({
+  final screenHeight = MediaQueryUtil.height;
+
+  RetroText({
     Key? key,
     required this.text,
     required this.retroTextSize,
@@ -19,16 +22,18 @@ class RetroText extends StatelessWidget {
 
   double _getTextSize() {
     switch (retroTextSize) {
+      case RetroTextSize.gigantic:
+        return screenHeight / 6;
       case RetroTextSize.huge:
-        return 60.0;
+        return screenHeight / 9;
       case RetroTextSize.big:
-        return 45.0;
+        return screenHeight / 12;
       case RetroTextSize.medium:
-        return 35.0;
+        return screenHeight / 16;
       case RetroTextSize.small:
-        return 28.0;
+        return screenHeight / 20;
       case RetroTextSize.tiny:
-        return 18.0;
+        return screenHeight / 25;
     }
   }
 

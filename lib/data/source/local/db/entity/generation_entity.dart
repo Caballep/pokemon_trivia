@@ -1,5 +1,5 @@
-import 'package:pokemon_trivia/core/utils/list_helper.dart';
-import 'package:pokemon_trivia/core/utils/string_transformers.dart';
+import 'package:pokemon_trivia/core/helpers/list_helper.dart';
+import 'package:pokemon_trivia/core/helpers/string_transformers.dart';
 import 'package:pokemon_trivia/data/source/remote/dto/generation_details_dto.dart';
 import 'package:pokemon_trivia/data/source/remote/dto/generation_dto.dart';
 import 'package:pokemon_trivia/data/source/remote/dto/region_dto.dart';

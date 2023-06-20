@@ -1,4 +1,4 @@
-import 'package:pokemon_trivia/core/utils/string_transformers.dart';
+import 'package:pokemon_trivia/core/helpers/string_transformers.dart';
 import 'package:pokemon_trivia/data/source/remote/dto/pokemon_dto.dart';
 
 class PokemonEntity {

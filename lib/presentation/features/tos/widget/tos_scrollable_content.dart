@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_trivia/presentation/shared/strings.dart';
+import 'package:pokemon_trivia/presentation/utils/strings.dart';
 
 class TosScrollableContent extends StatelessWidget {
   final VoidCallback onTermsReadCallback;

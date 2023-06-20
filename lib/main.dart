@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_trivia/locator.dart';
+import 'package:pokemon_trivia/presentation/features/menu/menu_screen.dart';
 import 'package:pokemon_trivia/presentation/features/tos/tos_screen.dart';
 import 'package:pokemon_trivia/test.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //return MaterialApp(home: TosScreen());
     return MaterialApp(
-      home: TestScreen(),
+      home: MenuScreen(),
     );
   }
 }

@@ -8,15 +8,13 @@ class LoadingPokemonListItem extends StatelessWidget {
   final LoadingPokemonListItemType loadingPokemonListItemType;
 
   const LoadingPokemonListItem(
-      {super.key,
-      required this.splashPokemon,
-      required this.loadingPokemonListItemType});
+      {super.key, required this.splashPokemon, required this.loadingPokemonListItemType});
 
   @override
   Widget build(BuildContext context) {
     final isBig = loadingPokemonListItemType == LoadingPokemonListItemType.big;
     final imageSize = isBig ? 130.0 : 60.0;
-    final textSize = isBig ? RetroTextSize.small : RetroTextSize.tiny;
+    final textSize = isBig ? 35.0 : 20.0;
     final textColor = isBig ? Colors.black87 : Colors.black54;
     final spacingBetween = isBig ? 0.0 : 10.0;
 
@@ -30,7 +28,10 @@ class LoadingPokemonListItem extends StatelessWidget {
         ),
         SizedBox(width: spacingBetween),
         RetroText(
-            text: splashPokemon.name, retroTextSize: textSize, color: textColor)
+          text: splashPokemon.name,
+          color: textColor,
+          fontSize: textSize,
+        )
       ],
     );
   }

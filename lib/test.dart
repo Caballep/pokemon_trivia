@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_trivia/presentation/shared/retro_button.dart';
+import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 
 class TestScreen extends StatelessWidget {
   @override
@@ -11,15 +11,10 @@ class TestScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          RetroButton(
+          RetroText(
+            text: "Hola hola hola hola hola hola",
             color: Colors.red,
-            text: "Click",
-            height: 120,
-            width: double.infinity,
-            onTapUp: () {},
           ),
-          // RetroButton(),
-          // RetroButton(),
         ],
       ),
     );

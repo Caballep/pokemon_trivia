@@ -2,49 +2,65 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart' as gf;
 import 'package:pokemon_trivia/presentation/utils/media_query_util.dart';
 
-enum RetroTextSize { gigantic, huge, big, medium, small, tiny }
-
 class RetroText extends StatelessWidget {
   final String text;
-  final RetroTextSize retroTextSize;
-  final FontWeight fontWeight;
   final Color color;
+  final double? fontSize;
 
-  final screenHeight = MediaQueryUtil.height;
+  final screenWidth = MediaQueryUtil.width;
 
-  RetroText({
-    Key? key,
-    required this.text,
-    required this.retroTextSize,
-    this.fontWeight = FontWeight.normal,
-    required this.color,
-  }) : super(key: key);
+  RetroText({Key? key, required this.text, required this.color, this.fontSize}) : super(key: key);
 
-  double _getTextSize() {
-    switch (retroTextSize) {
-      case RetroTextSize.gigantic:
-        return screenHeight / 6;
-      case RetroTextSize.huge:
-        return screenHeight / 9;
-      case RetroTextSize.big:
-        return screenHeight / 12;
-      case RetroTextSize.medium:
-        return screenHeight / 16;
-      case RetroTextSize.small:
-        return screenHeight / 20;
-      case RetroTextSize.tiny:
-        return screenHeight / 25;
-    }
+  @override
+  Widget build(BuildContext context) {
+    return fontSize != null
+        ? MultiLineRetroText(text: text, color: color, fontSize: fontSize!)
+        : SingleLineRetroText(
+            text: text,
+            color: color,
+          );
   }
+}
+
+class MultiLineRetroText extends StatelessWidget {
+  final String text;
+  final Color color;
+  final double fontSize;
+
+  final screenWidth = MediaQueryUtil.width;
+
+  MultiLineRetroText({Key? key, required this.text, required this.color, required this.fontSize})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: gf.GoogleFonts.vt323(
-        fontSize: _getTextSize(),
-        fontWeight: fontWeight,
-        color: color,
+      style: gf.GoogleFonts.vt323(fontSize: fontSize, color: color),
+    );
+  }
+}
+
+class SingleLineRetroText extends StatelessWidget {
+  final String text;
+  final Color color;
+
+  final screenWidth = MediaQueryUtil.width;
+
+  SingleLineRetroText({Key? key, required this.text, required this.color}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.center,
+        child: Text(
+          text,
+          style: gf.GoogleFonts.vt323(fontSize: screenWidth, color: color),
+          maxLines: 1,
+        ),
       ),
     );
   }

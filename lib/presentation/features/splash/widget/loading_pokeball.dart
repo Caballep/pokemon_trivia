@@ -47,17 +47,16 @@ class _LoadingPokeballState extends State<LoadingPokeball> with SingleTickerProv
           );
         },
         child: SizedBox(
-          width: 100,
-          height: 100,
+          width: 80,
+          height: 80,
           child: Image.asset('assets/images/pokeball.png'),
         ),
       ),
       const SizedBox(height: 10),
       RetroText(
         text: 'Loading',
-        retroTextSize: RetroTextSize.medium,
-        fontWeight: FontWeight.bold,
         color: Colors.black,
+        fontSize: 45,
       ),
       const SizedBox(height: 10),
     ]);

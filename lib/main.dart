@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         home: OrientationBuilder(builder: (BuildContext context, Orientation orientation) {
       MediaQueryUtil.height = MediaQuery.of(context).size.height;
       MediaQueryUtil.width = MediaQuery.of(context).size.width;
-      return MaterialApp(home: TosScreen());
+      return MaterialApp(home: TestScreen());
       // Return the desired widget based on the orientation
       // return TestScreen();
     }));

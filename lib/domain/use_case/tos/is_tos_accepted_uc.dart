@@ -1,4 +1,4 @@
-import 'package:pokemon_trivia/core/propagation/result.dart';
+import 'package:pokemon_trivia/data/util/result.dart';
 import 'package:pokemon_trivia/data/repo/service_privacy_repo.dart';
 
 class IsTosAcceptedUC {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_trivia/locator.dart';
+import 'package:pokemon_trivia/presentation/features/splash/splash_states.dart';
 import 'package:pokemon_trivia/presentation/features/splash/widget/loading_pokemon_list.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_bloc.dart';
 import 'package:pokemon_trivia/presentation/features/splash/widget/loading_pokeball.dart';

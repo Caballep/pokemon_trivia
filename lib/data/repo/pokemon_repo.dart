@@ -1,6 +1,4 @@
-import 'package:pokemon_trivia/core/propagation/error.dart';
-import 'package:pokemon_trivia/core/helpers/exception_handler.dart';
-import 'package:pokemon_trivia/core/propagation/result.dart';
+import 'package:pokemon_trivia/data/util/result.dart';
 import 'package:pokemon_trivia/data/source/local/storage/disk_cacher.dart';
 import 'package:pokemon_trivia/data/source/local/db/entity/pokemon_entity.dart';
 import 'package:pokemon_trivia/data/source/local/db/pokemon_dao.dart';
@@ -11,17 +9,14 @@ class PokemonRepository {
   final PokemonDao _pokemonDao;
   final PokemonApi _pokemonApi;
   final DiskCacher _diskCacher;
-  final ExceptionHandler _exceptionHandler;
 
   PokemonRepository(
       {required PokemonDao pokemonDao,
       required PokemonApi pokemonApi,
-      required DiskCacher diskCacher,
-      required ExceptionHandler exceptionHandler})
+      required DiskCacher diskCacher})
       : _pokemonDao = pokemonDao,
         _pokemonApi = pokemonApi,
-        _diskCacher = diskCacher,
-        _exceptionHandler = exceptionHandler;
+        _diskCacher = diskCacher;
 
   /// It's important to mention that [PokeApi] doesn't provide a [List] of
   /// [PokemonEntity], for instance multiple calls are need to be made. This is
@@ -36,9 +31,7 @@ class PokemonRepository {
       final pokemonModel = PokemonModel.fromPokemonEntity(pokemonEntity);
       return Result.success(pokemonModel);
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 
@@ -47,9 +40,7 @@ class PokemonRepository {
       final localPokemonCount = await _pokemonDao.getPokemonsCount();
       return Result.success(localPokemonCount);
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 
@@ -58,9 +49,7 @@ class PokemonRepository {
       final remotePokemonCount = await _pokemonApi.getPokemonCount();
       return Result.success(remotePokemonCount);
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 
@@ -68,14 +57,10 @@ class PokemonRepository {
   Future<Result<List<PokemonModel>>> getPokemons() async {
     try {
       final pokemonEntities = await _pokemonDao.getPokemons();
-      final pokemons = pokemonEntities
-          .map((e) => PokemonModel.fromPokemonEntity(e))
-          .toList();
+      final pokemons = pokemonEntities.map((e) => PokemonModel.fromPokemonEntity(e)).toList();
       return Result.success(pokemons);
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 
@@ -88,9 +73,7 @@ class PokemonRepository {
         throw Exception();
       }
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 
@@ -99,10 +82,7 @@ class PokemonRepository {
       final pokemonTypes = await _pokemonDao.getPokemonTypes();
       return Result.success(pokemonTypes);
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
-
 }

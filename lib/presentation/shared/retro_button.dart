@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 
 class RetroButton extends StatefulWidget {
@@ -30,21 +31,17 @@ class _RetroButtonState extends State<RetroButton> {
 
   @override
   Widget build(BuildContext context) {
-    final topPadding = widget.height / 40;
-    final bottomPadding = widget.height / 15;
-    final pressedTopPadding = widget.height / 15;
-    final pressedBottomPadding = widget.height / 40;
-    final pressedTextBottomPadding = widget.height / 20;
-    final textBottomPadding = widget.height / 10;
-    final pressedButtonBottomPadding = widget.height / 40;
-    final buttonBottomPadding = widget.height / 20;
-    final iconSize = widget.height / 2;
-
-    final textSize = widget.text.length <= 4
-        ? 150.0
-        : (widget.text.length <= 6)
-            ? 100.0
-            : (widget.text.length <= 8 ? 75.0 : 40.0);
+    final topPadding = widget.height * 0.025;
+    final bottomPadding = widget.height * 0.065;
+    final pressedTopPadding = widget.height * 0.065;
+    final pressedBottomPadding = widget.height * 0.025;
+    final pressedTextBottomPadding = widget.height * 0.05;
+    final textBottomPadding = widget.height * 0.1;
+    final pressedButtonBottomPadding = widget.height * 0.025;
+    final buttonBottomPadding = widget.height * 0.05;
+    final iconSize = widget.height * 0.5;
+    final textLeftPadding = widget.height * 0.1;
+    final textRightPadding = widget.height * 0.25;
 
     return Center(
       child: GestureDetector(
@@ -57,7 +54,7 @@ class _RetroButtonState extends State<RetroButton> {
           setState(() {
             isButtonPressed = false;
           });
-          widget.onTapUp(); // Notify the parent widget about the onTapUp event
+          widget.onTapUp();
         },
         onTapCancel: () {
           setState(() {
@@ -74,13 +71,18 @@ class _RetroButtonState extends State<RetroButton> {
                 padding: isButtonPressed
                     ? EdgeInsets.only(top: topPadding)
                     : EdgeInsets.only(top: bottomPadding),
-                child: RetroButtonBase(color: Colors.black87),
+                child: RetroButtonBase(
+                  color: Colors.black87,
+                  height: widget.height,
+                ),
               ),
               Container(
                 padding: isButtonPressed
                     ? EdgeInsets.only(bottom: pressedBottomPadding, top: pressedTopPadding)
                     : EdgeInsets.only(bottom: bottomPadding, top: topPadding),
-                child: RetroButtonBase(color: isButtonPressed ? widget.pressedColor : widget.color),
+                child: RetroButtonBase(
+                    color: isButtonPressed ? widget.pressedColor : widget.color,
+                    height: widget.height),
               ),
               Row(
                 children: [
@@ -97,21 +99,20 @@ class _RetroButtonState extends State<RetroButton> {
                           child: Image.asset(widget.iconAssetString)),
                     ),
                   ),
-                  SizedBox(width: 10),
                   Expanded(
                     flex: 2,
                     child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      alignment: Alignment.centerLeft,
-                      child: RetroText(
-                        text: widget.text,
-                        color: Colors.white,
-                      ),
-                      padding: isButtonPressed
-                          ? EdgeInsets.only(bottom: pressedTextBottomPadding)
-                          : EdgeInsets.only(bottom: textBottomPadding),
-                    ),
+                        width: double.infinity,
+                        height: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        child: RetroText(
+                          text: widget.text,
+                          color: Colors.white,
+                        ),
+                        padding: EdgeInsets.only(
+                            bottom: isButtonPressed ? pressedTextBottomPadding : textBottomPadding,
+                            right: textRightPadding,
+                            left: textLeftPadding)),
                   ),
                 ],
               )
@@ -125,14 +126,18 @@ class _RetroButtonState extends State<RetroButton> {
 
 class RetroButtonBase extends StatefulWidget {
   final Color color;
+  final double height;
 
-  const RetroButtonBase({Key? key, required this.color}) : super(key: key);
+  const RetroButtonBase({
+    Key? key,
+    required this.color,
+    required this.height,
+  }) : super(key: key);
 
   @override
   _RetroButtonBaseState createState() => _RetroButtonBaseState();
 }
 
-// TODO: Rework the way this is calculated, right now is flat. Use parent Height and Width to do so.
 class _RetroButtonBaseState extends State<RetroButtonBase> {
   @override
   Widget build(BuildContext context) {
@@ -140,31 +145,34 @@ class _RetroButtonBaseState extends State<RetroButtonBase> {
       alignment: Alignment.center,
       children: [
         Container(
-            padding: const EdgeInsets.fromLTRB(0, 36, 0, 36),
+            padding: EdgeInsets.fromLTRB(0, widget.height * 0.3, 0, widget.height * 0.3),
             child: Container(
                 width: double.infinity,
                 height: double.infinity,
                 decoration: BoxDecoration(color: widget.color))),
         Container(
-            padding: const EdgeInsets.fromLTRB(10, 24, 10, 24),
+            padding: EdgeInsets.fromLTRB(
+                widget.height * 0.1, widget.height * 0.2, widget.height * 0.1, widget.height * 0.2),
             child: Container(
                 width: double.infinity,
                 height: double.infinity,
                 decoration: BoxDecoration(color: widget.color))),
         Container(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+            padding: EdgeInsets.fromLTRB(
+                widget.height * 0.2, widget.height * 0.1, widget.height * 0.2, widget.height * 0.1),
             child: Container(
                 width: double.infinity,
                 height: double.infinity,
                 decoration: BoxDecoration(color: widget.color))),
         Container(
-            padding: const EdgeInsets.fromLTRB(30, 8, 30, 8),
+            padding: EdgeInsets.fromLTRB(
+                widget.height * 0.3, widget.height * 0.1, widget.height * 0.3, widget.height * 0.1),
             child: Container(
                 width: double.infinity,
                 height: double.infinity,
                 decoration: BoxDecoration(color: widget.color))),
         Container(
-            padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
+            padding: EdgeInsets.fromLTRB(widget.height * 0.4, 0, widget.height * 0.4, 0),
             child: Container(
                 width: double.infinity,
                 height: double.infinity,

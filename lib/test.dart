@@ -11,10 +11,13 @@ class TestScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          RetroText(
-            text: "Hola hola hola hola hola hola",
-            color: Colors.red,
-          ),
+          Container(
+            height: 40,
+            child: RetroText(
+              text: "Hola hola hola",
+              color: Colors.red,
+            ),
+          )
         ],
       ),
     );

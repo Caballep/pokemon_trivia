@@ -1,6 +1,4 @@
-import 'package:pokemon_trivia/core/propagation/error.dart';
-import 'package:pokemon_trivia/core/propagation/result.dart';
-import 'package:pokemon_trivia/core/helpers/exception_handler.dart';
+import 'package:pokemon_trivia/data/util/result.dart';
 import 'package:pokemon_trivia/data/source/local/db/entity/generation_entity.dart';
 import 'package:pokemon_trivia/data/source/local/db/pokemon_dao.dart';
 import 'package:pokemon_trivia/data/source/remote/api/pokemon_api.dart';
@@ -9,24 +7,17 @@ import 'package:pokemon_trivia/domain/model/generation_model.dart';
 class GenerationRepository {
   final PokemonDao _pokemonDao;
   final PokemonApi _pokemonApi;
-  final ExceptionHandler _exceptionHandler;
 
-  GenerationRepository(
-      {required PokemonDao pokemonDao,
-      required PokemonApi pokemonApi,
-      required ExceptionHandler exceptionHandler})
+  GenerationRepository({required PokemonDao pokemonDao, required PokemonApi pokemonApi})
       : _pokemonDao = pokemonDao,
-        _pokemonApi = pokemonApi,
-        _exceptionHandler = exceptionHandler;
+        _pokemonApi = pokemonApi;
 
   Future<Result<int>> getRemoteGenerationCount() async {
     try {
       final generations = await _pokemonApi.getGenerations();
       return Result.success(generations.length);
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 
@@ -35,9 +26,7 @@ class GenerationRepository {
       final generations = await _pokemonDao.getGenerations();
       return Result.success(generations.length);
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 
@@ -47,19 +36,15 @@ class GenerationRepository {
     try {
       final generationsDto = await _pokemonApi.getGenerations();
       for (var generationDto in generationsDto) {
-        final generationDetails =
-            await _pokemonApi.getGenerationDetails(generationDto.url);
-        final regionDetails =
-            await _pokemonApi.getRegionDetails(generationDetails.mainRegionUrl);
-        final generationEntity = GenerationEntity.from(
-            generationDto, generationDetails, regionDetails);
+        final generationDetails = await _pokemonApi.getGenerationDetails(generationDto.url);
+        final regionDetails = await _pokemonApi.getRegionDetails(generationDetails.mainRegionUrl);
+        final generationEntity =
+            GenerationEntity.from(generationDto, generationDetails, regionDetails);
         await _pokemonDao.insertGeneration(generationEntity);
       }
       return Result.success(null);
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 
@@ -68,9 +53,7 @@ class GenerationRepository {
       final generationEntity = await _pokemonDao.getGeneration(generationCode);
       return Result.success(GenerationModel.from(generationEntity));
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 
@@ -79,9 +62,7 @@ class GenerationRepository {
       final generationEntities = await _pokemonDao.getGenerations();
       return Result.success(GenerationModel.fromList(generationEntities));
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 
@@ -94,9 +75,7 @@ class GenerationRepository {
           generationCode, entityAccessState.getIntFromGenerationAccessState());
       return Result.success(null);
     } on Exception catch (e, stackTrace) {
-      RepoError error =
-          _exceptionHandler.handleExceptionAndGetError(e, stackTrace);
-      return Result.error(error);
+      return Result.error(ExceptionData(e, stackTrace));
     }
   }
 }

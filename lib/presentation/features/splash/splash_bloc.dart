@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokemon_trivia/domain/helper/outcome.dart';
+import 'package:pokemon_trivia/domain/model/pokemon_model.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_app_initial_data.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_data.dart';
-import 'package:pokemon_trivia/core/propagation/error.dart';
+import 'package:pokemon_trivia/presentation/features/splash/splash_states.dart';
 
 class SplashCubit extends Cubit<SplashState> {
   final FetchInitialDataAndGetPokemonsUC _fetchInitialDataAndGetPokemonsUC;
@@ -15,19 +17,14 @@ class SplashCubit extends Cubit<SplashState> {
   }
 
   Future<void> fetchPokemonData() async {
-    await for (final pokemonModelResult
-        in _fetchInitialDataAndGetPokemonsUC.invoke()) {
-      if (pokemonModelResult.isSuccess) {
-        final pokemonModel = pokemonModelResult.data;
-        if (pokemonModel != null) {
-          _updateSplashPokemonList(
-              SplashPokemon.fromPokemonModel(pokemonModel));
-          emit(SplashOnNextPokemonState(_splashPokemonList));
-        } else {
-          // Null Pokemon, not a breaking flow, ignore
-        }
+    await for (final pokemonModelResult in _fetchInitialDataAndGetPokemonsUC.invoke()) {
+      if (pokemonModelResult is SuccessOutcome) {
+        final pokemonModel = (pokemonModelResult as SuccessOutcome).data as PokemonModel;
+        _updateSplashPokemonList(SplashPokemon.fromPokemonModel(pokemonModel));
+        emit(SplashOnNextPokemonState(_splashPokemonList));
       } else {
-        _handleError(pokemonModelResult.error);
+        final errorOutcome = pokemonModelResult as ErrorOutcome;
+        _handleInitiatFetchError(errorOutcome.error);
         return;
       }
     }
@@ -41,35 +38,23 @@ class SplashCubit extends Cubit<SplashState> {
     _splashPokemonList.insert(0, splashPokemon);
   }
 
-  void _handleError(RepoError? error) {
-    if (error == RepoError.noInternet || error == RepoError.genericNetwork) {
+  void _handleInitiatFetchError(Errors? error) {
+    if (error == Errors.noInternet || error == Errors.genericNetwork) {
       emit(SplashNetworkErrorState());
       return;
     }
-    if (error == RepoError.timeOut || error == RepoError.serverIssue) {
+    if (error == Errors.timeOut || error == Errors.serverIssue) {
       emit(SplashServerErrorState());
+      return;
+    }
+    if (error == Errors.timeOut || error == Errors.serverIssue) {
+      emit(SplashServerErrorState());
+      return;
+    }
+    if (error == Errors.nullItem || error == Errors.errorInItem) {
+      emit(SplashStreamItemErrorState());
       return;
     }
     emit(SplashUnknownErrorState());
   }
 }
-
-abstract class SplashState {}
-
-class SplashInitialState extends SplashState {}
-
-class SplashOnNextPokemonState extends SplashState {
-  final List<SplashPokemon> splashPokemons;
-
-  SplashOnNextPokemonState(this.splashPokemons);
-}
-
-class SplashVerifyingState extends SplashState {}
-
-class SplashLoadingCompletedState extends SplashState {}
-
-class SplashNetworkErrorState extends SplashState {}
-
-class SplashServerErrorState extends SplashState {}
-
-class SplashUnknownErrorState extends SplashState {}

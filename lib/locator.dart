@@ -2,7 +2,7 @@ import 'package:device_info/device_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:pokemon_trivia/core/helpers/date_time_helper.dart';
-import 'package:pokemon_trivia/core/helpers/exception_handler.dart';
+import 'package:pokemon_trivia/domain/helper/exception_handler.dart';
 import 'package:pokemon_trivia/data/repo/generation_repo.dart';
 import 'package:pokemon_trivia/data/repo/pokemon_repo.dart';
 import 'package:pokemon_trivia/data/repo/service_privacy_repo.dart';
@@ -25,8 +25,7 @@ import 'package:pokemon_trivia/presentation/features/tos/tos_bloc.dart';
 final GetIt locator = GetIt.instance;
 
 void setupLocator() {
-  // Core
-  locator.registerFactory(() => ExceptionHandler(Logger()));
+  // Project Core
   locator.registerFactory(() => DateTimeHelper());
 
   // Sources
@@ -39,41 +38,34 @@ void setupLocator() {
 
   // Repositories
   locator.registerSingleton(PokemonRepository(
-      pokemonApi: locator.get(),
-      pokemonDao: locator.get(),
-      diskCacher: locator.get(),
-      exceptionHandler: locator.get()));
+      pokemonApi: locator.get(), pokemonDao: locator.get(), diskCacher: locator.get()));
   locator.registerSingleton(ServicePrivacyRepository(
-      sharedPref: SharedPref(),
-      exceptionHandler: locator.get(),
-      ipifyApi: locator.get(),
-      deviceInfoSource: locator.get()));
-  locator.registerSingleton(GenerationRepository(
-      pokemonDao: locator.get(),
-      pokemonApi: locator.get(),
-      exceptionHandler: locator.get()));
-
-  // UseCases
-  locator.registerSingleton(FetchPokemonsUC(
-      pokemonRepository: locator.get(), generationRepository: locator.get()));
+      sharedPref: SharedPref(), ipifyApi: locator.get(), deviceInfoSource: locator.get()));
   locator.registerSingleton(
-      IsTosAcceptedUC(servicePrivacyRepository: locator.get()));
+      GenerationRepository(pokemonDao: locator.get(), pokemonApi: locator.get()));
+
+  // Domain Core
+  locator.registerFactory(() => ExceptionHandler(Logger()));
+
+  // Domain UseCases
+  locator.registerSingleton(FetchPokemonsUC(
+      pokemonRepository: locator.get(),
+      generationRepository: locator.get(),
+      exceptionHandler: locator.get()));
+  locator.registerSingleton(IsTosAcceptedUC(servicePrivacyRepository: locator.get()));
   locator.registerSingleton(SaveTosAcceptanceDeviceDataUC(
       dateTimeHelper: locator.get(), servicePrivacyRepository: locator.get()));
-  locator
-      .registerSingleton(GetGenerationsUC(generationRepository: locator.get()));
-  locator.registerFactory(
-      () => FetchGenerationsUC(generationRepository: locator.get()));
-
+  locator.registerSingleton(GetGenerationsUC(generationRepository: locator.get()));
+  locator.registerFactory(() =>
+      FetchGenerationsUC(generationRepository: locator.get(), exceptionHandler: locator.get()));
   locator.registerFactory(() => FetchInitialDataAndGetPokemonsUC(
       fetchGenerationsUC: locator.get(),
       fetchPokemonsInRangeUC: locator.get(),
-      getGenerationsUC: locator.get()));
+      getGenerationsUC: locator.get(),
+      exceptionHandler: locator.get()));
 
   // Blocs and Cubits
+  locator.registerFactory(() => SplashCubit(fetchInitialDataAndGetPokemonsUC: locator.get()));
   locator.registerFactory(
-      () => SplashCubit(fetchInitialDataAndGetPokemonsUC: locator.get()));
-  locator.registerFactory(() => TosCubit(
-      isTosAcceptedUC: locator.get(),
-      saveTosAcceptanceDeviceDataUC: locator.get()));
+      () => TosCubit(isTosAcceptedUC: locator.get(), saveTosAcceptanceDeviceDataUC: locator.get()));
 }

@@ -1,41 +1,57 @@
-import 'package:pokemon_trivia/core/propagation/error.dart';
 import 'package:pokemon_trivia/data/repo/generation_repo.dart';
-import 'package:pokemon_trivia/core/propagation/result.dart';
+import 'package:pokemon_trivia/domain/helper/exception_handler.dart';
+import 'package:pokemon_trivia/domain/helper/outcome.dart';
 
 class FetchGenerationsUC {
   final GenerationRepository _generationRepository;
+  final ExceptionHandler _exceptionHandler;
 
-  FetchGenerationsUC({required GenerationRepository generationRepository})
-      : _generationRepository = generationRepository;
+  FetchGenerationsUC(
+      {required GenerationRepository generationRepository,
+      required ExceptionHandler exceptionHandler})
+      : _generationRepository = generationRepository,
+        _exceptionHandler = exceptionHandler;
 
   /// This function will only try to fetch Pokemons only if there is new Pokemon
   /// available in the remote.
-  Future<Result<void>> invoke() async {
-    final localGeneratioCountnResult =
-        await _generationRepository.getLocalGenerationCount();
-    final remoteGenerationCountResult =
-        await _generationRepository.getRemoteGenerationCount();
+  Future<Outcome<void>> invoke() async {
+    final localResult = await _generationRepository.getLocalGenerationCount();
+    final remoteResult = await _generationRepository.getRemoteGenerationCount();
 
-    if (localGeneratioCountnResult.isError) {
-      return Result.error(localGeneratioCountnResult.error!);
+    if (localResult.isError) {
+      final error = _exceptionHandler.handleAndGetError(localResult.exceptionData!);
+      return ErrorOutcome(error);
     }
 
-    if (localGeneratioCountnResult.data == null) {
-      return Result.error(RepoError.unknown);
+    if (localResult.data == null) {
+      return ErrorOutcome(Errors.nullOrEmptyUnexpectedData);
     }
 
-    if (remoteGenerationCountResult.isError) {
-      return Result.error(remoteGenerationCountResult.error!);
+    if (remoteResult.isError) {
+      final error = _exceptionHandler.handleAndGetError(remoteResult.exceptionData!);
+      return ErrorOutcome(error);
     }
 
-    if (remoteGenerationCountResult.data == null) {
-      return Result.error(RepoError.unknown);
+    if (remoteResult.data == null) {
+      return ErrorOutcome(Errors.nullOrEmptyUnexpectedData);
     }
 
-    if (localGeneratioCountnResult.data! >= remoteGenerationCountResult.data!) {
-      return Result.success(null);
+    // If local data is up to date with the remote one, move on
+    if (localResult.data! >= remoteResult.data!) {
+      return SuccessOutcome(null);
     }
 
-    return await _generationRepository.fetchGenerations();
+    final result = await _generationRepository.fetchGenerations();
+
+    if (result.isError) {
+      final error = _exceptionHandler.handleAndGetError(result.exceptionData!);
+      return ErrorOutcome(error);
+    }
+
+    if (result.isSuccess) {
+      SuccessOutcome(result.data);
+    }
+
+    return ErrorOutcome(Errors.unknown);
   }
 }

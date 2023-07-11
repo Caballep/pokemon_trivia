@@ -55,14 +55,14 @@ void setupLocator() {
   locator.registerSingleton(IsTosAcceptedUC(servicePrivacyRepository: locator.get()));
   locator.registerSingleton(SaveTosAcceptanceDeviceDataUC(
       dateTimeHelper: locator.get(), servicePrivacyRepository: locator.get()));
-  locator.registerSingleton(GetGenerationsUC(generationRepository: locator.get()));
+  locator.registerSingleton(
+      GetGenerationsUC(generationRepository: locator.get(), exceptionHandler: locator.get()));
   locator.registerFactory(() =>
       FetchGenerationsUC(generationRepository: locator.get(), exceptionHandler: locator.get()));
   locator.registerFactory(() => FetchInitialDataAndGetPokemonsUC(
       fetchGenerationsUC: locator.get(),
       fetchPokemonsInRangeUC: locator.get(),
-      getGenerationsUC: locator.get(),
-      exceptionHandler: locator.get()));
+      getGenerationsUC: locator.get()));
 
   // Blocs and Cubits
   locator.registerFactory(() => SplashCubit(fetchInitialDataAndGetPokemonsUC: locator.get()));

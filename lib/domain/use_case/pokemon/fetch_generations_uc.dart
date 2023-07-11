@@ -49,7 +49,7 @@ class FetchGenerationsUC {
     }
 
     if (result.isSuccess) {
-      SuccessOutcome(result.data);
+      return SuccessOutcome(result.data);
     }
 
     return ErrorOutcome(Errors.unknown);

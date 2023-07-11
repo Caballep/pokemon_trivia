@@ -37,28 +37,31 @@ class _LoadingPokeballState extends State<LoadingPokeball> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      const SizedBox(height: 10),
-      AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) {
-          return Transform.rotate(
-            angle: _animationController.value * 2 * 3.14159,
-            child: child,
-          );
-        },
-        child: SizedBox(
-          width: 80,
-          height: 80,
-          child: Image.asset('assets/images/pokeball.webp'),
-        ),
+      const Spacer(
+        flex: 1,
       ),
-      const SizedBox(height: 10),
-      RetroText(
-        text: 'Loading',
-        color: Colors.black,
-        fontSize: 45, 
+      Flexible(
+          flex: 11,
+          child: AnimatedBuilder(
+            animation: _animationController,
+            builder: (context, child) {
+              return Transform.rotate(
+                angle: _animationController.value * 2 * 3.14159,
+                child: child,
+              );
+            },
+            child: Image.asset('assets/images/pokeball.webp'),
+          )),
+      const Spacer(
+        flex: 1,
       ),
-      const SizedBox(height: 10),
+      Flexible(
+        flex: 5,
+        child: SingleLineRetroText(text: 'Loading', color: Colors.black),
+      ),
+      const Spacer(
+        flex: 1,
+      ),
     ]);
   }
 }

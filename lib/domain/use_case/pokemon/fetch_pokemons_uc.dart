@@ -37,7 +37,8 @@ class FetchPokemonsUC {
     final firstPokemon = generationResult.data!.startsWith;
     final lastPokemon = generationResult.data!.endsWith;
 
-    for (int i = firstPokemon; i <= lastPokemon + 1; i++) {
+    // for (int i = firstPokemon; i <= lastPokemon + 1; i++) { TODO
+    for (int i = firstPokemon; i <= 5 + 1; i++) {
       final pokemon = await _pokemonRepository.fetchPokemon(i);
       if (pokemon.isError) {
         yield ErrorOutcome(Errors.nullItem);

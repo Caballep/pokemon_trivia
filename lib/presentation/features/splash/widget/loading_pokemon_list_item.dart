@@ -6,32 +6,39 @@ import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 class LoadingPokemonListItem extends StatelessWidget {
   final SplashPokemon splashPokemon;
   final LoadingPokemonListItemType loadingPokemonListItemType;
+  final double loadingPokemonListHeight;
 
   const LoadingPokemonListItem(
-      {super.key, required this.splashPokemon, required this.loadingPokemonListItemType});
+      {Key? key,
+      required this.splashPokemon,
+      required this.loadingPokemonListItemType,
+      required this.loadingPokemonListHeight})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    const textColor = Colors.black54;
     final isBig = loadingPokemonListItemType == LoadingPokemonListItemType.big;
-    final imageSize = isBig ? 130.0 : 60.0;
-    final textSize = isBig ? 35.0 : 20.0;
-    final textColor = isBig ? Colors.black87 : Colors.black54;
-    final spacingBetween = isBig ? 0.0 : 10.0;
+    final imageSize = isBig ? loadingPokemonListHeight * 0.25 : loadingPokemonListHeight * 0.15;
+    final textSize = isBig ? loadingPokemonListHeight * 0.10 : loadingPokemonListHeight * 0.06;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        InDiskImageWidget(
-          imageUrl: splashPokemon.frontSpriteUrl,
+        SizedBox(
           width: imageSize,
           height: imageSize,
+          child: InDiskImageWidget(
+            width: imageSize,
+            height: imageSize,
+            imageUrl: splashPokemon.frontSpriteUrl,
+          ),
         ),
-        SizedBox(width: spacingBetween),
         RetroText(
           text: splashPokemon.name,
           color: textColor,
           fontSize: textSize,
-        )
+        ),
       ],
     );
   }

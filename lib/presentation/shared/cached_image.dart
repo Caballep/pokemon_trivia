@@ -30,15 +30,18 @@ class InDiskImageWidget extends StatelessWidget {
             child: colorize != null
                 ? ColorFiltered(
                     colorFilter: ColorFilter.mode(colorize!, BlendMode.srcATop),
-                    child: Image.file(snapshot.data!),
+                    child: Image.file(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                    ),
                   )
-                : Image.file(snapshot.data!),
+                : Image.file(snapshot.data!, fit: BoxFit.cover),
           );
         } else {
           return SizedBox(
             width: width / 2,
             height: height / 2,
-            child: Image.asset('assets/images/image-not-found.png'),
+            child: Image.asset('assets/images/image-not-found.png', fit: BoxFit.cover),
           );
         }
       },

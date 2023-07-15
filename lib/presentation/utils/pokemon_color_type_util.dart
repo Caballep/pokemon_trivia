@@ -15,12 +15,12 @@ class PokemonColorTypeUtil {
     'fire': Colors.red[700],
     'water': Colors.blue,
     'grass': Colors.green,
-    'electric': Colors.yellow,
+    'electric': Colors.yellow[600],
     'psychic': Colors.pink,
     'ice': Colors.cyan,
     'dragon': Colors.deepOrange,
     'dark': Colors.black87,
-    'fairy': Colors.yellow,
+    'fairy': Colors.pink[300],
   });
 
   static Color getColorFromType(String typeName) {

@@ -11,11 +11,12 @@ class DexList extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus(); // Unfocus the TextField
+          FocusScope.of(context).unfocus();
         },
         child: Container(
           color: Colors.black87,
           child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
             itemCount: pokemonDexData.length,
             itemBuilder: (context, index) {
               final pokemon = pokemonDexData[index];

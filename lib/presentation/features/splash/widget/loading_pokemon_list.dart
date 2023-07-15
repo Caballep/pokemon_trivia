@@ -16,6 +16,7 @@ class LoadingPokemonList extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         children: [
           ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: splashPokemonList.length,
             itemBuilder: (context, index) {
               final loadingPokemonListItemType =

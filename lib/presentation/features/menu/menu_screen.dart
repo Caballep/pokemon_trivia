@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pokemon_trivia/domain/model/pokemon_model.dart';
+import 'package:pokemon_trivia/presentation/features/dex/dex_screen.dart';
 import 'package:pokemon_trivia/presentation/features/menu/widget/game_logo.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_screen.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_button.dart';
@@ -54,8 +56,8 @@ class MenuScreen extends StatelessWidget {
                                 PageRouteBuilder(
                                   pageBuilder: (context, animation, secondaryAnimation) =>
                                       Screen2(),
-                                  transitionDuration: Duration(milliseconds: 150),
-                                  reverseTransitionDuration: Duration(milliseconds: 150),
+                                  transitionDuration: const Duration(milliseconds: 150),
+                                  reverseTransitionDuration: const Duration(milliseconds: 150),
                                   transitionsBuilder:
                                       (context, animation, secondaryAnimation, child) {
                                     return SlideTransition(
@@ -84,7 +86,27 @@ class MenuScreen extends StatelessWidget {
                             text: "Dex",
                             width: double.infinity,
                             iconAssetString: 'assets/images/friendly_globe_icon.png',
-                            onTapUp: () {},
+                            onTapUp: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) =>
+                                      DexScreen(),
+                                  transitionDuration: const Duration(milliseconds: 150),
+                                  reverseTransitionDuration: const Duration(milliseconds: 150),
+                                  transitionsBuilder:
+                                      (context, animation, secondaryAnimation, child) {
+                                    return SlideTransition(
+                                      position: Tween<Offset>(
+                                        begin: const Offset(1.0, 0.0),
+                                        end: Offset.zero,
+                                      ).animate(animation),
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                           ),
                         ),
                         SizedBox(
@@ -109,3 +131,19 @@ class MenuScreen extends StatelessWidget {
     ));
   }
 }
+
+List<PokemonModel> myPokemonList = [
+  PokemonModel(
+    number: 1,
+    name: 'Bulbasaur',
+    frontSpriteUrl: 'https://example.com/bulbasaur.png',
+    mainType: 'Grass',
+  ),
+  PokemonModel(
+    number: 4,
+    name: 'Charmander',
+    frontSpriteUrl: 'https://example.com/charmander.png',
+    mainType: 'Fire',
+  ),
+  // Add more Pokemon models as needed
+];

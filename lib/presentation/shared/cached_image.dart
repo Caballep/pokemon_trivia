@@ -8,12 +8,14 @@ class InDiskImageWidget extends StatelessWidget {
   final String imageUrl;
   final double height;
   final double width;
+  final Color? colorize;
 
   const InDiskImageWidget({
     Key? key,
     required this.imageUrl,
     required this.height,
     required this.width,
+    this.colorize,
   }) : super(key: key);
 
   @override
@@ -23,14 +25,19 @@ class InDiskImageWidget extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data != null) {
           return SizedBox(
-            width: width / 2,
-            height: height / 2,
-            child: Image.file(snapshot.data!),
+            width: width,
+            height: height,
+            child: colorize != null
+                ? ColorFiltered(
+                    colorFilter: ColorFilter.mode(colorize!, BlendMode.srcATop),
+                    child: Image.file(snapshot.data!),
+                  )
+                : Image.file(snapshot.data!),
           );
         } else {
           return SizedBox(
-            width: width / 4,
-            height: height / 4,
+            width: width / 2,
+            height: height / 2,
             child: Image.asset('assets/images/image-not-found.png'),
           );
         }

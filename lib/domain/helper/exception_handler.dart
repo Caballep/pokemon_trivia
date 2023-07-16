@@ -26,6 +26,10 @@ class ExceptionHandler {
     }
 
     if (e is ClientException) {
+      if (e.statusCode == null) {
+        return Errors.noInternet;
+      }
+
       final code = e.statusCode!;
 
       if (code == HttpStatus.notFound || code == HttpStatus.badRequest) {

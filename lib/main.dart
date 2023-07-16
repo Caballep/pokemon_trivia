@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pokemon_trivia/locator.dart';
 import 'package:pokemon_trivia/presentation/features/menu/menu_screen.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_screen.dart';
@@ -8,6 +9,8 @@ import 'package:pokemon_trivia/test.dart';
 
 void main() {
   setupLocator();
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
 

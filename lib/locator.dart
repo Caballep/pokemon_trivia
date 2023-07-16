@@ -13,7 +13,7 @@ import 'package:pokemon_trivia/data/source/local/storage/disk_cacher.dart';
 import 'package:pokemon_trivia/data/source/local/storage/shared_pref/shared_pref.dart';
 import 'package:pokemon_trivia/data/source/remote/api/ipify_api.dart';
 import 'package:pokemon_trivia/data/source/remote/api/pokemon_api.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_app_initial_data.dart';
+import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_app_initial_data_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_generations_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_pokemons_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/get_detailed_pokemons.dart';

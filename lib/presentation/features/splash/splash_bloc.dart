@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_trivia/domain/helper/outcome.dart';
 import 'package:pokemon_trivia/domain/model/pokemon_model.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_app_initial_data.dart';
+import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_app_initial_data_uc.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_data.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_states.dart';
 
@@ -17,9 +17,14 @@ class SplashCubit extends Cubit<SplashState> {
   }
 
   Future<void> fetchPokemonData() async {
-    await Future.delayed(const Duration(milliseconds: 1500));
+    await Future.delayed(const Duration(milliseconds: 1000));
     await for (final pokemonModelResult in _fetchInitialDataAndGetPokemonsUC.invoke()) {
       if (pokemonModelResult is SuccessOutcome) {
+        final pokemonModelData = (pokemonModelResult as SuccessOutcome).data;
+        if (pokemonModelData == null) {
+          emit(SplashLoadingCompletedState());
+          return;
+        }
         final pokemonModel = (pokemonModelResult as SuccessOutcome).data as PokemonModel;
         _updateSplashPokemonList(SplashPokemon.fromPokemonModel(pokemonModel));
         emit(SplashOnNextPokemonState(_splashPokemonList));

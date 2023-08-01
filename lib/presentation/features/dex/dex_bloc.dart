@@ -23,7 +23,7 @@ class DexCubit extends Cubit<DexState> {
 
     final detailedPokemons = (outcome as SuccessOutcome).data as List<DetailedPokemonModel>;
     pokemonDexDataList = detailedPokemons
-        .map((p) => PokemonDexData(p.number, p.name, p.frontSpriteUrl, p.mainType, p.generationCode,
+        .map((p) => PokemonDexData(p.number, p.name, p.imageFile, p.mainType, p.generationCode,
             p.regionName, PokemonColorTypeUtil.getColorFromType(p.mainType)))
         .toList();
 

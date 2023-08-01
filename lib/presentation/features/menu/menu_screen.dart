@@ -131,19 +131,3 @@ class MenuScreen extends StatelessWidget {
     ));
   }
 }
-
-List<PokemonModel> myPokemonList = [
-  PokemonModel(
-    number: 1,
-    name: 'Bulbasaur',
-    frontSpriteUrl: 'https://example.com/bulbasaur.png',
-    mainType: 'Grass',
-  ),
-  PokemonModel(
-    number: 4,
-    name: 'Charmander',
-    frontSpriteUrl: 'https://example.com/charmander.png',
-    mainType: 'Fire',
-  ),
-  // Add more Pokemon models as needed
-];

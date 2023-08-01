@@ -31,7 +31,7 @@ class LoadingPokemonListItem extends StatelessWidget {
           child: InDiskImageWidget(
             width: imageSize,
             height: imageSize,
-            imageUrl: splashPokemon.frontSpriteUrl,
+            imageFile: splashPokemon.imageFile,
           ),
         ),
         RetroText(

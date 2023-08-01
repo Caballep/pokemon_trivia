@@ -38,7 +38,8 @@ class DexPokemonDetail extends StatelessWidget {
             ),
           ),
           Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            InDiskImageWidget(imageUrl: pokemonDexData.frontSpriteUrl, width: 110, height: 110),
+            InDiskImageWidget(
+                imageFile: pokemonDexData.imageFile, width: 110, height: 110),
             RetroText(
               text: '#${pokemonDexData.number}',
               fontSize: 36,

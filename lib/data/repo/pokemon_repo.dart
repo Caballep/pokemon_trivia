@@ -25,10 +25,11 @@ class PokemonRepository {
   Future<Result<PokemonModel>> fetchPokemon(int pokemonNumber) async {
     try {
       final pokemonDto = await _pokemonApi.getPokemon(pokemonNumber);
-      await _diskCacher.cacheImage(pokemonDto.frontSpriteUrl);
       final pokemonEntity = PokemonEntity.fromDto(pokemonDto);
       await _pokemonDao.insertPokemon(pokemonEntity);
-      final pokemonModel = PokemonModel.fromPokemonEntity(pokemonEntity);
+      await _diskCacher.downloadAndSaveImage(pokemonDto.frontSpriteUrl, pokemonEntity.name);
+      final imageFile = await _diskCacher.getImageFileFromPokemonName(pokemonEntity.name);
+      final pokemonModel = PokemonModel.fromPokemonEntity(pokemonEntity, imageFile);
       return Result.success(pokemonModel);
     } on Exception catch (e, stackTrace) {
       return Result.error(ExceptionData(e, stackTrace));
@@ -57,7 +58,11 @@ class PokemonRepository {
   Future<Result<List<PokemonModel>>> getPokemons() async {
     try {
       final pokemonEntities = await _pokemonDao.getPokemons();
-      final pokemons = pokemonEntities.map((e) => PokemonModel.fromPokemonEntity(e)).toList();
+      final pokemonsFuture = pokemonEntities.map((e) async {
+        var imageFile = await _diskCacher.getImageFileFromPokemonName(e.name);
+        return PokemonModel.fromPokemonEntity(e, imageFile);
+      }).toList();
+      final pokemons = await Future.wait(pokemonsFuture);
       return Result.success(pokemons);
     } on Exception catch (e, stackTrace) {
       return Result.error(ExceptionData(e, stackTrace));
@@ -68,7 +73,8 @@ class PokemonRepository {
     try {
       final pokemonEntity = await _pokemonDao.getPokemonByNumber(pokemonNumber);
       if (pokemonEntity != null) {
-        return Result.success(PokemonModel.fromPokemonEntity(pokemonEntity));
+        final imageFile = await _diskCacher.getImageFileFromPokemonName(pokemonEntity.name);
+        return Result.success(PokemonModel.fromPokemonEntity(pokemonEntity, imageFile));
       } else {
         throw Exception();
       }

@@ -29,6 +29,12 @@ class FetchGenerationsUC {
 
     if (remoteResult.isError) {
       final error = _exceptionHandler.handleAndGetError(remoteResult.exceptionData!);
+      // If we are unable to check the remote data for either updating or getting 
+      //the initial data, we check that at least first generation is stored, if so
+      // we can proceed (user is able to play offline)
+      if (localResult.data! >= 1) {
+        return SuccessOutcome(null);
+      }
       return ErrorOutcome(error);
     }
 

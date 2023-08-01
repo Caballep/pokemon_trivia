@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:pokemon_trivia/domain/model/generation_model.dart';
 import 'package:pokemon_trivia/domain/model/pokemon_model.dart';
 
 class DetailedPokemonModel {
   final int number;
   final String name;
-  final String frontSpriteUrl;
+  final File imageFile;
   final String mainType;
   final String generationCode;
   final String regionName;
@@ -12,7 +14,7 @@ class DetailedPokemonModel {
   DetailedPokemonModel(
       {required this.number,
       required this.name,
-      required this.frontSpriteUrl,
+      required this.imageFile,
       required this.mainType,
       required this.generationCode,
       required this.regionName});
@@ -21,7 +23,7 @@ class DetailedPokemonModel {
     return DetailedPokemonModel(
         number: pokemonModel.number,
         name: pokemonModel.name,
-        frontSpriteUrl: pokemonModel.frontSpriteUrl,
+        imageFile: pokemonModel.imageFile,
         mainType: pokemonModel.mainType,
         generationCode: generationModel.code,
         regionName: generationModel.mainRegionName);

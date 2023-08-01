@@ -64,7 +64,7 @@ class DexListItem extends StatelessWidget {
                                   colorize: Colors.black,
                                   width: 80,
                                   height: 80,
-                                  imageUrl: _pokemonDexData.frontSpriteUrl,
+                                  imageFile: _pokemonDexData.imageFile,
                                 )),
                             Container(
                                 padding: const EdgeInsets.only(bottom: 2, right: 2),
@@ -72,14 +72,14 @@ class DexListItem extends StatelessWidget {
                                   colorize: Colors.white,
                                   width: 80,
                                   height: 80,
-                                  imageUrl: _pokemonDexData.frontSpriteUrl,
+                                  imageFile: _pokemonDexData.imageFile,
                                 )),
                             Container(
                                 padding: const EdgeInsets.only(bottom: 3, right: 3),
                                 child: InDiskImageWidget(
                                   width: 65,
                                   height: 65,
-                                  imageUrl: _pokemonDexData.frontSpriteUrl,
+                                  imageFile: _pokemonDexData.imageFile,
                                 )),
                           ],
                         ),

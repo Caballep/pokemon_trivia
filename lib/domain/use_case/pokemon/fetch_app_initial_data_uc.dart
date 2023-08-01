@@ -19,17 +19,8 @@ class FetchInitialDataAndGetPokemonsUC {
         _getGenerationsUC = getGenerationsUC;
 
   Stream<Outcome<PokemonModel?>> invoke() async* {
-    final generationsCheck = await _getGenerationsUC.invoke();
-    if (generationsCheck is ErrorOutcome) {
-      yield ErrorOutcome(generationsCheck.error);
-      return;
-    }
+    
 
-    final firstGenerationCheck = (generationsCheck as SuccessOutcome).data.first;
-    if (firstGenerationCheck.accessState == GenerationAccessState.pokemonsFetched) {
-      yield SuccessOutcome(null);
-      return;
-    }
 
     final fetchGenerationsResult = await _fetchGenerationsUC.invoke();
     if (fetchGenerationsResult is ErrorOutcome) {

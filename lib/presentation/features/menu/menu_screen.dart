@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_trivia/domain/model/pokemon_model.dart';
+import 'package:pokemon_trivia/presentation/features/about/about_screen.dart';
 import 'package:pokemon_trivia/presentation/features/dex/dex_screen.dart';
 import 'package:pokemon_trivia/presentation/features/menu/widget/game_logo.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_screen.dart';
@@ -122,7 +123,27 @@ class MenuScreen extends StatelessWidget {
                             text: "About",
                             width: double.infinity,
                             iconAssetString: 'assets/images/creature_icon.png',
-                            onTapUp: () {},
+                            onTapUp: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) =>
+                                      AboutScreen(),
+                                  transitionDuration: const Duration(milliseconds: 150),
+                                  reverseTransitionDuration: const Duration(milliseconds: 150),
+                                  transitionsBuilder:
+                                      (context, animation, secondaryAnimation, child) {
+                                    return SlideTransition(
+                                      position: Tween<Offset>(
+                                        begin: const Offset(1.0, 0.0),
+                                        end: Offset.zero,
+                                      ).animate(animation),
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],

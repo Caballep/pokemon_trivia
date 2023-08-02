@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pokemon_trivia/locator.dart';
-import 'package:pokemon_trivia/presentation/features/menu/menu_screen.dart';
+import 'package:pokemon_trivia/presentation/features/main_menu/menu_screen.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_screen.dart';
 import 'package:pokemon_trivia/presentation/features/tos/tos_screen.dart';
 import 'package:pokemon_trivia/presentation/utils/media_query_util.dart';

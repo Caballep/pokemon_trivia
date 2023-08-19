@@ -1,6 +1,6 @@
 import 'package:pokemon_trivia/data/repo/generation_repo.dart';
 import 'package:pokemon_trivia/data/repo/pokemon_repo.dart';
-import 'package:pokemon_trivia/domain/helper/exception_handler.dart';
+import 'package:pokemon_trivia/domain/helper/result_handler.dart';
 import 'package:pokemon_trivia/domain/helper/outcome.dart';
 import 'package:pokemon_trivia/domain/model/generation_model.dart';
 import 'package:pokemon_trivia/domain/model/pokemon_model.dart';
@@ -8,29 +8,24 @@ import 'package:pokemon_trivia/domain/model/pokemon_model.dart';
 class FetchPokemonsUC {
   final PokemonRepository _pokemonRepository;
   final GenerationRepository _generationRepository;
-  final ExceptionHandler _exceptionHandler;
+  final ResultHandler _resultHandler;
 
   FetchPokemonsUC(
       {required PokemonRepository pokemonRepository,
       required GenerationRepository generationRepository,
-      required ExceptionHandler exceptionHandler})
+      required ResultHandler resultHandler})
       : _pokemonRepository = pokemonRepository,
         _generationRepository = generationRepository,
-        _exceptionHandler = exceptionHandler;
+        _resultHandler = resultHandler;
 
   /// This function will only try to fetch Pokemons only if there is new Pokemon
   /// available in the remote.
   Stream<Outcome<PokemonModel?>> invoke(String generationCode) async* {
     final generationResult = await _generationRepository.getGeneration(generationCode);
 
-    if (generationResult.isError) {
-      final error = _exceptionHandler.handleAndGetError(generationResult.exceptionData!);
-      yield ErrorOutcome(error);
-      return;
-    }
-
-    if (generationResult.data == null) {
-      yield ErrorOutcome(Errors.nullOrEmptyUnexpectedData);
+    final generationResultError = _resultHandler.handle(generationResult, errorWhenNull: true);
+    if (generationResultError != null) {
+      yield ErrorOutcome(generationResultError);
       return;
     }
 
@@ -50,9 +45,11 @@ class FetchPokemonsUC {
     final updateAccessStateResult = await _generationRepository.updateGenerationAccessState(
         generationResult.data!.code, GenerationAccessState.pokemonsFetched);
 
-    if (updateAccessStateResult.isError) {
-      final error = _exceptionHandler.handleAndGetError(updateAccessStateResult.exceptionData!);
-      yield ErrorOutcome(error);
+    final updateAccessStateResultError = _resultHandler.handle(updateAccessStateResult);
+
+    if (updateAccessStateResultError != null) {
+      yield ErrorOutcome(updateAccessStateResultError);
+      return;
     }
   }
 }

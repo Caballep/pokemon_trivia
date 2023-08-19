@@ -4,7 +4,7 @@ import 'package:pokemon_trivia/domain/model/detailed_pokemon_model.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/get_detailed_pokemons.dart';
 import 'package:pokemon_trivia/presentation/features/dex/dex_data.dart';
 import 'package:pokemon_trivia/presentation/features/dex/dex_states.dart';
-import 'package:pokemon_trivia/presentation/utils/pokemon_color_type_util.dart';
+import 'package:pokemon_trivia/presentation/utils/color_provider.dart';
 
 class DexCubit extends Cubit<DexState> {
   final GetDetailedPokemonsUC _getAllPokemonsUC;
@@ -24,7 +24,7 @@ class DexCubit extends Cubit<DexState> {
     final detailedPokemons = (outcome as SuccessOutcome).data as List<DetailedPokemonModel>;
     pokemonDexDataList = detailedPokemons
         .map((p) => PokemonDexData(p.number, p.name, p.imageFile, p.mainType, p.generationCode,
-            p.regionName, PokemonColorTypeUtil.getColorFromType(p.mainType)))
+            p.regionName, ColorProvider.getColorFromPokemonType(p.mainType)))
         .toList();
 
     emit(DexOnGetPokemonsState(pokemonDexDataList));

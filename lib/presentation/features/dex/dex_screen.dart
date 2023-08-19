@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_trivia/locator.dart';
-import 'package:pokemon_trivia/presentation/features/dex/dex_bloc.dart';
+import 'package:pokemon_trivia/presentation/features/dex/dex_cubit.dart';
 import 'package:pokemon_trivia/presentation/features/dex/dex_states.dart';
 import 'package:pokemon_trivia/presentation/features/dex/widget/dex_filters.dart';
 import 'package:pokemon_trivia/presentation/features/dex/widget/dex_list.dart';

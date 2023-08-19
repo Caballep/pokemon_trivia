@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 abstract class Outcome<T> {}
 
 class SuccessOutcome<T> extends Outcome<T> {

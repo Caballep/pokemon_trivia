@@ -3,7 +3,7 @@ import 'package:pokemon_trivia/domain/model/pokemon_model.dart';
 import 'package:pokemon_trivia/presentation/features/about/about_screen.dart';
 import 'package:pokemon_trivia/presentation/features/dex/dex_screen.dart';
 import 'package:pokemon_trivia/presentation/features/main_menu/widget/game_logo.dart';
-import 'package:pokemon_trivia/presentation/features/regions/regions_menu_screen.dart';
+import 'package:pokemon_trivia/presentation/features/region_menu/region_menu_screen.dart';
 import 'package:pokemon_trivia/presentation/features/splash/splash_screen.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_button.dart';
 import 'package:pokemon_trivia/presentation/utils/media_query_util.dart';
@@ -57,7 +57,7 @@ class MainMenuScreen extends StatelessWidget {
                                 context,
                                 PageRouteBuilder(
                                   pageBuilder: (context, animation, secondaryAnimation) =>
-                                      const RegionsMenuScreen(),
+                                      RegionsMenuScreen(),
                                   transitionDuration: const Duration(milliseconds: 150),
                                   reverseTransitionDuration: const Duration(milliseconds: 150),
                                   transitionsBuilder:

@@ -1,15 +1,15 @@
 import 'package:pokemon_trivia/data/source/local/db/entity/generation_entity.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:pokemon_trivia/data/source/local/db/entity/pokemon_entity.dart';
-import 'package:pokemon_trivia/data/source/local/db/pokemon_db.dart';
+import 'package:pokemon_trivia/data/source/local/db/pokemon_trivia_db.dart';
 
 class PokemonDao {
-  final PokemonDb pokemonDb;
+  final PokemonTriviaDb pokemonTriviaDb;
 
-  PokemonDao({required this.pokemonDb});
+  PokemonDao({required this.pokemonTriviaDb});
 
   Future<void> insertPokemon(PokemonEntity pokemon) async {
-    final db = await pokemonDb.open();
+    final db = await pokemonTriviaDb.open();
     await db.insert(
       'pokemons',
       {
@@ -24,7 +24,7 @@ class PokemonDao {
   }
 
   Future<List<PokemonEntity>> getPokemons() async {
-    final db = await pokemonDb.open();
+    final db = await pokemonTriviaDb.open();
     final queryMap = await db.query('pokemons');
 
     final pokemonList = queryMap.map((map) {
@@ -42,7 +42,7 @@ class PokemonDao {
   }
 
   Future<PokemonEntity?> getPokemonByNumber(int number) async {
-    final db = await pokemonDb.open();
+    final db = await pokemonTriviaDb.open();
     final queryMap = await db.query(
       'pokemons',
       where: 'number = ?',
@@ -65,7 +65,7 @@ class PokemonDao {
   }
 
   Future<int> getPokemonsCount() async {
-    final db = await pokemonDb.open();
+    final db = await pokemonTriviaDb.open();
     final result = await db.rawQuery('SELECT COUNT(*) FROM pokemons');
     final count = Sqflite.firstIntValue(result);
     db.close();
@@ -73,7 +73,7 @@ class PokemonDao {
   }
 
   Future<List<String>> getPokemonTypes() async {
-    final db = await pokemonDb.open();
+    final db = await pokemonTriviaDb.open();
     final result = await db.rawQuery('SELECT DISTINCT mainType FROM pokemons');
     final types = result.map((row) => row['mainType'] as String).toList();
     db.close();
@@ -81,7 +81,7 @@ class PokemonDao {
   }
 
   Future<void> insertGeneration(GenerationEntity generation) async {
-    final db = await pokemonDb.open();
+    final db = await pokemonTriviaDb.open();
     await db.insert(
       'generations',
       {
@@ -96,7 +96,7 @@ class PokemonDao {
   }
 
   Future<List<GenerationEntity>> getGenerations() async {
-    final db = await pokemonDb.open();
+    final db = await pokemonTriviaDb.open();
     final queryMap = await db.query('generations');
 
     final generationList = queryMap.map((map) {
@@ -115,7 +115,7 @@ class PokemonDao {
   }
 
   Future<GenerationEntity> getGeneration(String generationCode) async {
-    final db = await pokemonDb.open();
+    final db = await pokemonTriviaDb.open();
     final queryMap = await db.query(
       'generations',
       where: 'code = ?',
@@ -140,7 +140,7 @@ class PokemonDao {
 
   Future<void> updateGenerationPokemonsFetchedStatus(
       String generationCode, int generationAccessState) async {
-    final db = await pokemonDb.open();
+    final db = await pokemonTriviaDb.open();
     await db.update(
       'generations',
       {'accessState': generationAccessState},

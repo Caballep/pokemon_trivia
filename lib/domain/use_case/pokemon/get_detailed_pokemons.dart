@@ -1,38 +1,27 @@
 import 'package:pokemon_trivia/data/repo/generation_repo.dart';
 import 'package:pokemon_trivia/data/repo/pokemon_repo.dart';
-import 'package:pokemon_trivia/domain/helper/exception_handler.dart';
+import 'package:pokemon_trivia/domain/helper/result_handler.dart';
 import 'package:pokemon_trivia/domain/helper/outcome.dart';
 import 'package:pokemon_trivia/domain/model/detailed_pokemon_model.dart';
 
 class GetDetailedPokemonsUC {
   final PokemonRepository _pokemonRepository;
   final GenerationRepository _generationRepository;
-  final ExceptionHandler _exceptionHandler;
+  final ResultHandler _resultHandler;
 
-  GetDetailedPokemonsUC(
-      this._pokemonRepository, this._generationRepository, this._exceptionHandler);
+  GetDetailedPokemonsUC(this._pokemonRepository, this._generationRepository, this._resultHandler);
 
   Future<Outcome<List<DetailedPokemonModel>?>> invoke() async {
     final pokemonsResult = await _pokemonRepository.getPokemons();
-
-    if (pokemonsResult.isError) {
-      final error = _exceptionHandler.handleAndGetError(pokemonsResult.exceptionData!);
-      return ErrorOutcome(error);
-    }
-
-    if (pokemonsResult.data == null) {
-      return ErrorOutcome(Errors.nullOrEmptyUnexpectedData);
+    final pokemonsResultError = _resultHandler.handle(pokemonsResult, errorWhenNull: true);
+    if (pokemonsResultError != null) {
+      return ErrorOutcome(pokemonsResultError);
     }
 
     final generationResult = await _generationRepository.getGenerations();
-
-    if (generationResult.isError) {
-      final error = _exceptionHandler.handleAndGetError(generationResult.exceptionData!);
-      return ErrorOutcome(error);
-    }
-
-    if (generationResult.data == null) {
-      return ErrorOutcome(Errors.nullOrEmptyUnexpectedData);
+    final generationResultError = _resultHandler.handle(generationResult, errorWhenNull: true);
+    if (generationResultError != null) {
+      return ErrorOutcome(generationResultError);
     }
 
     final pokemons = pokemonsResult.data!;

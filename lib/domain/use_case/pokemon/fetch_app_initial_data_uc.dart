@@ -20,8 +20,6 @@ class FetchInitialDataAndGetPokemonsUC {
 
   Stream<Outcome<PokemonModel?>> invoke() async* {
     
-
-
     final fetchGenerationsResult = await _fetchGenerationsUC.invoke();
     if (fetchGenerationsResult is ErrorOutcome) {
       yield ErrorOutcome(fetchGenerationsResult.error);

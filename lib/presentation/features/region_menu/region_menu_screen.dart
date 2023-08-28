@@ -7,7 +7,9 @@ import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_o
 
 class RegionsMenuScreen extends StatefulWidget {
   final RegionMenuCubit _regionMenuCubit = locator.get<RegionMenuCubit>();
-  RegionsMenuScreen({super.key});
+  RegionsMenuScreen({super.key}) {
+    _regionMenuCubit.getRegionsMenuModel();
+  }
 
   @override
   State<RegionsMenuScreen> createState() => _RegionsMenuScreenState();
@@ -21,22 +23,42 @@ class _RegionsMenuScreenState extends State<RegionsMenuScreen> {
         child: BlocBuilder<RegionMenuCubit, RegionMenuState>(
           bloc: widget._regionMenuCubit,
           builder: (context, state) {
-            return Container(
-              padding: const EdgeInsets.only(left: 15, right: 15),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-                  crossAxisSpacing: 15.0,
-                  childAspectRatio: 1 / 1.65,
+            if (state is RegionMenuInitialState) {
+              // Show Blank
+              return Container();
+            }
+
+            if (state is RegionMenuLoadingState) {
+              // Show Loading
+              return const CircularProgressIndicator();
+            }
+
+            if (state is RegionMenuLoadedState) {
+              // Show what you already have
+              return Container(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+                    crossAxisSpacing: 15.0,
+                    childAspectRatio: 1 / 1.9,
+                  ),
+                  itemCount: state.regionMenuData.generationsCode.length,
+                  itemBuilder: (context, index) {
+                    return RegionOption(
+                      generationCode: state.regionMenuData.generationsCode[index],
+                    );
+                  },
                 ),
-                itemCount: 20, // 10 Containers per column (2 columns, total 20)
-                itemBuilder: (context, index) {
-                  return RegionOption(
-                    generationCode: (state as RegionMenuLoadedState).regionMenuData.generationsCode[index],
-                  );
-                },
-              ),
-            );
+              );
+            }
+
+            if (state is RegionMenuErrorState) {
+              // Show an error text
+              return Center(child: Text('Error: ${state.errorMessage}'));
+            }
+
+            return Container(); // Default case
           },
         ),
       ),

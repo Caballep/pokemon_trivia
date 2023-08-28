@@ -22,22 +22,33 @@ class FetchPokemonsUC {
   /// available in the remote.
   Stream<Outcome<PokemonModel?>> invoke(String generationCode) async* {
     final generationResult = await _generationRepository.getGeneration(generationCode);
-
     final generationResultError = _resultHandler.handle(generationResult, errorWhenNull: true);
     if (generationResultError != null) {
       yield ErrorOutcome(generationResultError);
       return;
     }
 
+    // No need to verify if there is an error, both error or null data is acceptable
+    final lastFetchedPokemonResult =
+        await _generationRepository.getLastFetchedPokemon(generationCode);
+    final lastFetchedPokemon = lastFetchedPokemonResult.data;
+
     final firstPokemon = generationResult.data!.startsWith;
     final lastPokemon = generationResult.data!.endsWith;
 
+    final nextPokemon = lastFetchedPokemon != null && lastFetchedPokemon >= firstPokemon
+        ? lastFetchedPokemon
+        : firstPokemon;
+
+    final temporalDeleteThis = (firstPokemon + 19); // make this a flag for testing
+
     // for (int i = firstPokemon; i <= lastPokemon + 1; i++) { TODO
-    for (int i = firstPokemon; i <= 25 + 1; i++) {
+    for (int i = nextPokemon; i <= temporalDeleteThis + 1; i++) {
       final pokemon = await _pokemonRepository.fetchPokemon(i);
       if (pokemon.isError) {
         yield ErrorOutcome(Errors.nullItem);
       } else {
+        await _generationRepository.setLastFetchedPokemon(generationCode, i);
         yield SuccessOutcome(pokemon.data);
       }
     }

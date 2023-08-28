@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_trivia/presentation/features/dex/dex_data.dart';
 import 'package:pokemon_trivia/presentation/features/dex/widget/dex_pokemon_detail.dart';
+import 'package:pokemon_trivia/presentation/shared/image_sticker.dart';
 import 'package:pokemon_trivia/presentation/shared/cached_image.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 
@@ -55,33 +56,9 @@ class DexListItem extends StatelessWidget {
                         const SizedBox(
                           width: 12,
                         ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.only(top: 2, left: 2),
-                                child: InDiskImageWidget(
-                                  colorize: Colors.black,
-                                  width: 80,
-                                  height: 80,
-                                  imageFile: _pokemonDexData.imageFile,
-                                )),
-                            Container(
-                                padding: const EdgeInsets.only(bottom: 2, right: 2),
-                                child: InDiskImageWidget(
-                                  colorize: Colors.white,
-                                  width: 80,
-                                  height: 80,
-                                  imageFile: _pokemonDexData.imageFile,
-                                )),
-                            Container(
-                                padding: const EdgeInsets.only(bottom: 3, right: 3),
-                                child: InDiskImageWidget(
-                                  width: 65,
-                                  height: 65,
-                                  imageFile: _pokemonDexData.imageFile,
-                                )),
-                          ],
+                        ImageSticker(
+                          imageFile: _pokemonDexData.imageFile,
+                          size: 80,
                         ),
                         Stack(
                           children: [

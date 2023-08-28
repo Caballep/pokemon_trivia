@@ -17,7 +17,6 @@ class SplashCubit extends Cubit<SplashState> {
   }
 
   Future<void> fetchPokemonData() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
     await for (final pokemonModelResult in _fetchInitialDataAndGetPokemonsUC.invoke()) {
       if (pokemonModelResult is SuccessOutcome) {
         final pokemonModelData = (pokemonModelResult as SuccessOutcome).data;

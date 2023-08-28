@@ -149,4 +149,55 @@ class PokemonDao {
     );
     db.close();
   }
+
+  Future<void> setLastFetchedPokemon(String generationCode, int pokemonNumber) async {
+    final db = await pokemonTriviaDb.open();
+
+    final existingGeneration = await db.query(
+      'generations',
+      where: 'code = ?',
+      whereArgs: [generationCode],
+      limit: 1,
+    );
+
+    if (existingGeneration.isEmpty) {
+      // Generation entry doesn't exist, insert it
+      await db.insert(
+        'generations',
+        {'code': generationCode, 'lastFetchedPokemon': pokemonNumber},
+        conflictAlgorithm: ConflictAlgorithm.ignore,
+      );
+    } else {
+      // Generation entry exists, update the lastFetchedPokemon field
+      await db.update(
+        'generations',
+        {'lastFetchedPokemon': pokemonNumber},
+        where: 'code = ?',
+        whereArgs: [generationCode],
+      );
+    }
+
+    db.close();
+  }
+
+  Future<int?> getLastFetchedPokemon(String generationCode) async {
+    final db = await pokemonTriviaDb.open();
+
+    final queryMap = await db.query(
+      'generations',
+      columns: ['lastFetchedPokemon'],
+      where: 'code = ?',
+      whereArgs: [generationCode],
+      limit: 1,
+    );
+
+    await db.close();
+
+    if (queryMap.isNotEmpty) {
+      final map = queryMap.first;
+      return map['lastFetchedPokemon'] as int?;
+    }
+
+    return null;
+  }
 }

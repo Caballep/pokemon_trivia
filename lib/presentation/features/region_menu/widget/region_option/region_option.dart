@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_trivia/locator.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option_cubit.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option_state.dart';
+import 'package:pokemon_trivia/presentation/shared/Image_sticker.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 import 'package:pokemon_trivia/presentation/utils/color_provider.dart';
 
 class RegionOption extends StatefulWidget {
   final String generationCode;
   final RegionOptionCubit regionOptionCubit = locator.get<RegionOptionCubit>();
-  RegionOption({Key? key, required this.generationCode}) : super(key: key);
+  RegionOption({Key? key, required this.generationCode}) : super(key: key) {
+    regionOptionCubit.getRegionModel(generationCode);
+  }
 
   @override
   State<RegionOption> createState() => _RegionOptionState();
@@ -21,7 +24,7 @@ class _RegionOptionState extends State<RegionOption> {
     return BlocBuilder<RegionOptionCubit, RegionOptionState>(
         bloc: widget.regionOptionCubit,
         builder: (context, state) {
-          if (state is RegionOptionLoadedState) {
+          if (state is RegionOptionReadyToPlayState) {
             final data = state.regionOptionData;
             final color = ColorProvider.getColorFromGenerationCode(data.code);
             return Container(
@@ -31,16 +34,22 @@ class _RegionOptionState extends State<RegionOption> {
                   RegionOptionSurface(color: color),
                   Column(
                     children: [
-                      MultiLineRetroText(text: data.code, color: Colors.black, fontSize: 45.0),
-                      MultiLineRetroText(text: data.name, color: Colors.black, fontSize: 30.0),
                       const SizedBox(
-                        height: 60,
-                      ), // 3 pokemon
+                        height: 10,
+                      ),
+                      MultiLineRetroText(text: data.code, color: Colors.black, fontSize: 45.0),
+                      MultiLineRetroText(text: data.name, color: Colors.white, fontSize: 30.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ChangingImageSticker(
+                              displayPokemonImageFiles: data.displayPokemonImageFiles, size: 100)
+                        ],
+                      ),
                       MultiLineRetroText(
                           text: "From ${data.firstPokemonNumber} to ${data.lastPokemonNumber}",
                           color: Colors.black,
                           fontSize: 20.0),
-
                       Container(
                         padding: const EdgeInsets.all(10),
                         child: Container(
@@ -75,11 +84,16 @@ class _RegionOptionState extends State<RegionOption> {
               ),
             );
           }
-          return Container();
+          return Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: Colors.amber,
+          );
         });
   }
 }
 
+// The background of the option
 class RegionOptionSurface extends StatelessWidget {
   final Color color;
   const RegionOptionSurface({Key? key, required this.color}) : super(key: key);

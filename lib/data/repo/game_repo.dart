@@ -29,7 +29,7 @@ class GameRepository {
   Future<Result<GenerationScoreModel>> getGameScore(String generationCode) async {
     try {
       final gameScoreResult = await _gameDao.getGameScore(generationCode);
-      final gameScoreModel = GenerationScoreModel.from(gameScoreResult!);
+      final gameScoreModel = GenerationScoreModel.from(gameScoreResult);
       return Result.success(gameScoreModel);
     } on Exception catch (e, stackTrace) {
       return Result.error(ExceptionData(e, stackTrace));

@@ -36,7 +36,7 @@ class GameDao {
     }
   }
 
-  Future<GameScoreEntity?> getGameScore(String generationCode) async {
+  Future<GameScoreEntity> getGameScore(String generationCode) async {
     final db = await pokemonTriviaDb.open();
     final result = await db.query(
       'game_scores',
@@ -56,7 +56,12 @@ class GameDao {
         highestStreak: row['highestStreak'] as int,
       );
     } else {
-      return null;
+      return GameScoreEntity(
+        generationCode: generationCode,
+        highestScore: 0,
+        highestAnswered: 0,
+        highestStreak: 0,
+      );
     }
   }
 

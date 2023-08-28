@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 class PokemonTriviaDb {
   static const String databaseName = 'pokemon_trivia_database.db';
-  static const int databaseVersion = 1;
+  static const int databaseVersion = 2;
 
   Future<Database> open() async {
     final databasesPath = await getDatabasesPath();
@@ -27,22 +27,24 @@ class PokemonTriviaDb {
         startsWith INTEGER,
         endsWith INTEGER,
         mainRegionName TEXT,
+        lastFetchedPokemon INTEGER,
         accessState INTEGER DEFAULT 1
       )
     ''');
 
     await db.execute('''
       CREATE TABLE coins (
+        id INTEGER PRIMARY KEY, 
         amount INTEGER
       )
     ''');
 
     await db.execute('''
       CREATE TABLE game_scores (
-        generationCode TEXT PRIMARY KEY,,
+        generationCode TEXT PRIMARY KEY,
         highestScore INTEGER,
         highestAnswered INTEGER,
-        highestStreak INTEGER,
+        highestStreak INTEGER
       )
     ''');
   }

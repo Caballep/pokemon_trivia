@@ -5,12 +5,12 @@ import 'package:pokemon_trivia/data/repo/pokemon_repo.dart';
 import 'package:pokemon_trivia/domain/helper/outcome.dart';
 import 'package:pokemon_trivia/domain/helper/result_handler.dart';
 
-class GetThreeIconicPokemonImages {
+class GetThreeIconicPokemonImagesUC {
   final PokemonRepository _pokemonRepository;
   final GenerationRepository _generationRepository;
   final ResultHandler _resultHandler;
 
-  GetThreeIconicPokemonImages(
+  GetThreeIconicPokemonImagesUC(
       {required PokemonRepository pokemonRepository,
       required GenerationRepository generationRepository,
       required ResultHandler resultHandler})
@@ -19,7 +19,7 @@ class GetThreeIconicPokemonImages {
         _resultHandler = resultHandler;
 
   Future<Outcome<List<File>?>> invoke(String generationCode) async {
-    final threeIconicPokemonImages = List<File>.empty();
+    final List<File> threeIconicPokemonImages = [];
 
     final getGenerationResult = await _generationRepository.getGeneration(generationCode);
     final getGenerationResultError = _resultHandler.handle(getGenerationResult);

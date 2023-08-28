@@ -2,29 +2,30 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_trivia/domain/helper/outcome.dart';
 import 'package:pokemon_trivia/domain/use_case/game/get_coins_uc.dart';
-import 'package:pokemon_trivia/domain/use_case/game/get_regions_and_score_model.dart';
+import 'package:pokemon_trivia/domain/use_case/game/get_regions_and_score_model_uc.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/region_menu_data.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/region_menu_states.dart';
 
 class RegionMenuCubit extends Cubit<RegionMenuState> {
   final GetRegionsAndScoresModelUC _getRegionsAndScoresModelUC;
-  final GetGoinsUC _getGoinsUC;
+  final GetCoinsUC _getCoinsUC;
 
-  RegionMenuCubit(super.initialState,
+  RegionMenuCubit(
       {required GetRegionsAndScoresModelUC getRegionsAndScoresModelUC,
-      required GetGoinsUC getGoinsUC})
+      required GetCoinsUC getCoinsUC})
       : _getRegionsAndScoresModelUC = getRegionsAndScoresModelUC,
-        _getGoinsUC = getGoinsUC;
+        _getCoinsUC = getCoinsUC,
+        super(RegionMenuInitialState());
 
   Future<void> getRegionsMenuModel() async {
-    final getRegionsAndScoresModelUCOutcome = _getRegionsAndScoresModelUC.invoke();
+    final getRegionsAndScoresModelUCOutcome = await _getRegionsAndScoresModelUC.invoke();
     if (getRegionsAndScoresModelUCOutcome is ErrorOutcome) {
       emit(RegionMenuErrorState("Quack!"));
       return;
     }
     final regionsAndScoreModel = (getRegionsAndScoresModelUCOutcome as SuccessOutcome).data;
 
-    final getGoinsUCOutcome = _getGoinsUC.invoke();
+    final getGoinsUCOutcome = await _getCoinsUC.invoke();
     if (getGoinsUCOutcome is ErrorOutcome) {
       emit(RegionMenuErrorState("Quack!"));
       return;

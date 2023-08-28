@@ -1,56 +1,43 @@
-// region_menu_event.dart
-import 'dart:io';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_trivia/domain/helper/outcome.dart';
 import 'package:pokemon_trivia/domain/model/generation_model.dart';
-import 'package:pokemon_trivia/domain/model/region_score_model.dart';
-import 'package:pokemon_trivia/domain/use_case/game/get_region_score_model.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/get_generation_iconic_pokemons.dart';
-import 'package:pokemon_trivia/domain/use_case/pokemon/get_generations_uc.dart';
-import 'package:pokemon_trivia/presentation/features/region_menu/region_menu_data.dart';
+import 'package:pokemon_trivia/domain/model/region_option_detail_model.dart';
+import 'package:pokemon_trivia/domain/use_case/game/get_region_option_detail_model_uc.dart';
+import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option_data.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option_state.dart';
 
 class RegionOptionCubit extends Cubit<RegionOptionState> {
-  final GetGenerationScoreUC _getGenerationScoreUC;
-  final GetGenerationsUC _getGenerationsUC;
-  final GetThreeIconicPokemonImages _getThreeIconicPokemonImages;
+  final GetRegionOptionDetailModelUC _getRegionOptionDetailModelUC;
 
-  RegionOptionCubit(super.initialState,
-      {required GetGenerationScoreUC getGenerationScoreUC,
-      required GetGenerationsUC getGenerationsUC,
-      required GetThreeIconicPokemonImages getThreeIconicPokemonImages})
-      : _getGenerationScoreUC = getGenerationScoreUC,
-        _getGenerationsUC = getGenerationsUC,
-        _getThreeIconicPokemonImages = getThreeIconicPokemonImages;
+  RegionOptionCubit({
+    required GetRegionOptionDetailModelUC getRegionOptionDetailModelUC,
+  })  : _getRegionOptionDetailModelUC = getRegionOptionDetailModelUC,
+        super(RegionOptionInitialState());
 
   Future<void> getRegionModel(String generationCode) async {
-    final getGenerationScoreOutcome = _getGenerationScoreUC.invoke(generationCode);
-    if (getGenerationScoreOutcome is ErrorOutcome) {
-      emit(RegionOptionErrorState("Quack!"));
+    final getRegionOptionDetailModelResult =
+        await _getRegionOptionDetailModelUC.invoke(generationCode);
+    if (getRegionOptionDetailModelResult is ErrorOutcome) {
+      emit(RegionOptionErrorState('errorMessage'));
       return;
     }
-    final generationScoreModel =
-        (getGenerationScoreOutcome as SuccessOutcome).data as GenerationScoreModel;
+    final regionOptionDetailModel =
+        (getRegionOptionDetailModelResult as SuccessOutcome).data as RegionOptionDetailModel;
 
-    final getGenerationOutcome = _getGenerationsUC.invoke();
-    if (getGenerationOutcome is ErrorOutcome) {
-      emit(RegionOptionErrorState("Quack!"));
-      return;
+    if (regionOptionDetailModel.generationAccessState == GenerationAccessState.locked) {
+      final lockedData = RegionOptionLockedData.from(regionOptionDetailModel);
+      emit(RegionOptionLockedState(lockedData));
     }
-    final generationModel = (getGenerationOutcome as SuccessOutcome).data as GenerationModel;
 
-    final getThreeIconicPokemonImagesOutcome =
-        await _getThreeIconicPokemonImages.invoke(generationCode);
-    if (getThreeIconicPokemonImagesOutcome is ErrorOutcome) {
-      emit(RegionOptionErrorState("errorMessage"));
-      return;
+    if (regionOptionDetailModel.generationAccessState == GenerationAccessState.available) {
+      final availableData = RegionOptionAvailableData.from(regionOptionDetailModel);
+      emit(RegionOptionAvailableState(availableData));
     }
-    final threeIconicPokemonImages =
-        (getThreeIconicPokemonImagesOutcome as SuccessOutcome).data as List<File>;
 
-    final regionOptionData =
-        RegionOptionData.from(generationModel, generationScoreModel, threeIconicPokemonImages);
-    emit(RegionOptionLoadedState(regionOptionData));
+    if (regionOptionDetailModel.generationAccessState == GenerationAccessState.pokemonsFetched) {
+      final readyToPlayData = RegionOptionReadyToPlayData.from(regionOptionDetailModel);
+      emit(RegionOptionReadyToPlayState(readyToPlayData));
+    }
   }
+  
 }

@@ -78,4 +78,22 @@ class GenerationRepository {
       return Result.error(ExceptionData(e, stackTrace));
     }
   }
+
+  Future<Result<void>> setLastFetchedPokemon(String generationCode, int pokemonNumber) async {
+    try {
+      _pokemonDao.setLastFetchedPokemon(generationCode, pokemonNumber);
+      return Result.success(null);
+    } on Exception catch (e, stackTrace) {
+      return Result.error(ExceptionData(e, stackTrace));
+    }
+  }
+
+  Future<Result<int?>> getLastFetchedPokemon(String generationCode) async {
+    try {
+      final result = await _pokemonDao.getLastFetchedPokemon(generationCode);
+      return Result.success(result);
+    } on Exception catch (e, stackTrace) {
+      return Result.error(ExceptionData(e, stackTrace));
+    }
+  }
 }

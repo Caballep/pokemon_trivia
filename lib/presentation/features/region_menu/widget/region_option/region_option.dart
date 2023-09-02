@@ -9,8 +9,10 @@ import 'package:pokemon_trivia/presentation/utils/color_provider.dart';
 
 class RegionOption extends StatefulWidget {
   final String generationCode;
+  final Function(String generationCode) onRegionClicked;
   final RegionOptionCubit regionOptionCubit = locator.get<RegionOptionCubit>();
-  RegionOption({Key? key, required this.generationCode}) : super(key: key) {
+  RegionOption({Key? key, required this.generationCode, required this.onRegionClicked})
+      : super(key: key) {
     regionOptionCubit.getRegionModel(generationCode);
   }
 
@@ -27,7 +29,10 @@ class _RegionOptionState extends State<RegionOption> {
           if (state is RegionOptionReadyToPlayState) {
             final data = state.regionOptionData;
             final color = ColorProvider.getColorFromGenerationCode(data.code);
-            return Container(
+            return GestureDetector(
+              onTap: () {
+                widget.onRegionClicked(widget.generationCode);
+              },
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -37,21 +42,23 @@ class _RegionOptionState extends State<RegionOption> {
                       const SizedBox(
                         height: 10,
                       ),
-                      MultiLineRetroText(text: data.code, color: Colors.black, fontSize: 45.0),
-                      MultiLineRetroText(text: data.name, color: Colors.white, fontSize: 30.0),
+                      MultiLineRetroText(text: data.code, color: Colors.black, fontSize: 60.0),
+                      MultiLineRetroText(text: data.name, color: Colors.white, fontSize: 35.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ChangingImageSticker(
-                              displayPokemonImageFiles: data.displayPokemonImageFiles, size: 100)
+                              displayPokemonImageFiles: data.displayPokemonImageFiles, size: 135)
                         ],
                       ),
-                      MultiLineRetroText(
-                          text: "From ${data.firstPokemonNumber} to ${data.lastPokemonNumber}",
-                          color: Colors.black,
-                          fontSize: 20.0),
                       Container(
-                        padding: const EdgeInsets.all(10),
+                        child: SingleLineRetroText(
+                            text: "From ${data.firstPokemonNumber} to ${data.lastPokemonNumber}",
+                            color: Colors.black),
+                        padding: EdgeInsets.only(left: 30, right: 30),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(30),
                         child: Container(
                           alignment: Alignment.center,
                           width: double.infinity,
@@ -61,15 +68,15 @@ class _RegionOptionState extends State<RegionOption> {
                               MultiLineRetroText(
                                   text: "Score: ${data.highestScore}",
                                   color: Colors.black,
-                                  fontSize: 20.0),
+                                  fontSize: 35.0),
                               MultiLineRetroText(
                                   text: "Answered: ${data.highestAnswered}",
                                   color: Colors.black,
-                                  fontSize: 20.0),
+                                  fontSize: 35.0),
                               MultiLineRetroText(
                                   text: "Streak: ${data.highestStreak}",
                                   color: Colors.black,
-                                  fontSize: 20.0),
+                                  fontSize: 35.0),
                             ],
                           ),
                         ),

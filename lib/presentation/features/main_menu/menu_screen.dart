@@ -51,7 +51,7 @@ class MainMenuScreen extends StatelessWidget {
                             height: height * 0.15,
                             text: "Play",
                             width: double.infinity,
-                            iconAssetString: 'assets/images/play_icon.png',
+                            iconAssetString: 'assets/images/play.png',
                             onTapUp: () {
                               Navigator.push(
                                 context,
@@ -87,7 +87,7 @@ class MainMenuScreen extends StatelessWidget {
                             height: height * 0.15,
                             text: "Dex",
                             width: double.infinity,
-                            iconAssetString: 'assets/images/friendly_globe_icon.png',
+                            iconAssetString: 'assets/images/dex.png',
                             onTapUp: () {
                               Navigator.push(
                                 context,
@@ -123,7 +123,7 @@ class MainMenuScreen extends StatelessWidget {
                             height: height * 0.15,
                             text: "About",
                             width: double.infinity,
-                            iconAssetString: 'assets/images/creature_icon.png',
+                            iconAssetString: 'assets/images/about.png',
                             onTapUp: () {
                               Navigator.push(
                                 context,

@@ -28,18 +28,28 @@ class LoadingPokemonList extends StatelessWidget {
                   loadingPokemonListHeight: thisWidgetHeight);
             },
           ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white.withOpacity(0.0),
-                  Colors.white,
-                ],
+          Column(
+            children: [
+              const Spacer(
+                flex: 1,
               ),
-            ),
-          ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.white.withOpacity(0.0),
+                        Colors.white,
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          )
         ],
       );
     });

@@ -14,6 +14,7 @@ class RegionOptionDetailModel {
   final int? highestStreak;
   final int? unlockCoinCost;
   final GenerationAccessState generationAccessState;
+  int? stars;
 
   RegionOptionDetailModel(
       {required this.code,

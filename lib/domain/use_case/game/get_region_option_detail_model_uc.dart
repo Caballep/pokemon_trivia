@@ -72,6 +72,8 @@ class GetRegionOptionDetailModelUC {
     final result = RegionOptionDetailModel.from(
         generationModel, generationScoreModel, threeIconicPokemonImages, null);
 
+    result.stars = 1;
+
     return SuccessOutcome(result);
   }
 }

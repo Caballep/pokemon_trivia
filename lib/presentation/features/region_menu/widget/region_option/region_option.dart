@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_trivia/locator.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option_cubit.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option_state.dart';
+import 'package:pokemon_trivia/presentation/features/region_menu/widget/stars.dart';
 import 'package:pokemon_trivia/presentation/shared/Image_sticker.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 import 'package:pokemon_trivia/presentation/utils/color_provider.dart';
@@ -84,18 +85,25 @@ class _RegionOptionState extends State<RegionOption> {
                     ],
                   ),
                   Container(
-                    alignment: Alignment.bottomCenter,
-                    child: MultiLineRetroText(text: "XXX", color: Colors.yellow, fontSize: 60.0),
-                  )
+                      height: 90,
+                      padding: const EdgeInsets.only(top: 50, left: 50),
+                      alignment: Alignment.bottomCenter,
+                      child: Stars(data.stars))
                 ],
               ),
             );
           }
-          return Container(
-            height: double.infinity,
-            width: double.infinity,
-            color: Colors.amber,
-          );
+          if (state is RegionOptionAvailableState) {
+            final data = state.regionOptionData;
+            final color = ColorProvider.getColorFromGenerationCode(data.code);
+            RegionOptionSurface(color: color);
+          }
+          if (state is RegionOptionLockedState) {
+            final data = state.regionOptionData;
+            final color = ColorProvider.getColorFromGenerationCode(data.code);
+            RegionOptionSurface(color: color);
+          }
+          return const RegionOptionSurface(color: Colors.grey);
         });
   }
 }

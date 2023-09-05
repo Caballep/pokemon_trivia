@@ -28,8 +28,9 @@ class AllRegionSummary extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  const Spacer(flex: 1),
                   Expanded(
-                    flex: 2,
+                    flex: 4,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -41,13 +42,31 @@ class AllRegionSummary extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.only(right: 10),
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Expanded(
-                                    child: Image.asset('assets/images/coin.png'),
-                                  ),
+                                      flex: 1,
+                                      child: Container(
+                                          width: double.infinity,
+                                          alignment: Alignment.centerRight,
+                                          child: Column(
+                                            children: [
+                                              const Spacer(flex: 1),
+                                              Expanded(
+                                                flex: 10,
+                                                child: Image.asset('assets/images/coin_white.png'),
+                                              ),
+                                              const Spacer(flex: 1),
+                                            ],
+                                          ))),
                                   Expanded(
-                                      child: SingleLineRetroText(
-                                          text: availableCoins.toString(), color: Colors.yellow))
+                                      flex: 1,
+                                      child: Container(
+                                          width: double.infinity,
+                                          alignment: Alignment.centerLeft,
+                                          child: SingleLineRetroText(
+                                              text: availableCoins.toString(),
+                                              color: Colors.amberAccent)))
                                 ],
                               ),
                             )),
@@ -55,15 +74,17 @@ class AllRegionSummary extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                      flex: 2,
+                      flex: 4,
                       child: Container(
                         width: double.infinity,
                         alignment: Alignment.centerLeft,
-                        child:
-                            SingleLineRetroText(text: "Your Summary", color: Colors.yellowAccent),
+                        child: SingleLineRetroText(text: "Your Summary", color: Colors.yellow),
                       )),
+                  const Spacer(
+                    flex: 1,
+                  ),
                   Expanded(
-                      flex: 6,
+                      flex: 12,
                       child: Row(
                         children: [
                           const Spacer(flex: 1),
@@ -145,7 +166,7 @@ class AllRegionSummary extends StatelessWidget {
                           const Spacer(flex: 1),
                         ],
                       )),
-                  const Spacer(flex: 1)
+                  const Spacer(flex: 2)
                 ],
               ))),
       Expanded(

@@ -47,15 +47,15 @@ class _RegionsMenuScreenState extends State<RegionsMenuScreen> {
 
               return Column(
                 children: [
-                  Expanded(flex: 1, child: AllRegionSummary(regionMenuData: data)),
+                  Expanded(flex: 2, child: AllRegionSummary(regionMenuData: data)),
                   Expanded(
-                      flex: 3,
+                      flex: 5,
                       child: Column(
                         children: [
                           Expanded(
                               flex: 2,
                               child: Container(
-                                  padding: EdgeInsets.only(left: 30, right: 30),
+                                  padding: const EdgeInsets.only(left: 20, right: 20),
                                   child: SingleLineRetroText(
                                       text: "Tap on a region to start", color: Colors.black))),
                           const Spacer(flex: 1),

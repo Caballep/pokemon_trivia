@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_trivia/presentation/features/dex/dex_data.dart';
 import 'package:pokemon_trivia/presentation/features/dex/widget/dex_pokemon_detail.dart';
 import 'package:pokemon_trivia/presentation/shared/image_sticker.dart';
-import 'package:pokemon_trivia/presentation/shared/cached_image.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 
 class DexListItem extends StatelessWidget {

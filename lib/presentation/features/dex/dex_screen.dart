@@ -30,7 +30,9 @@ class _DexScreenState extends State<DexScreen> {
         child: BlocBuilder<DexCubit, DexState>(
           bloc: _dexCubit,
           builder: (context, state) {
-            if (state is DexOnGetPokemonsState) {
+            if (state is DexInitialState) {
+              return const SizedBox();
+            } else if (state is DexOnGetPokemonsState) {
               return Column(
                 children: [
                   DexFilters(onValueChanged: _dexCubit.filterInputted),

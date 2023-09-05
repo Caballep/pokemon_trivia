@@ -17,7 +17,7 @@ class _RegionOptionPageViewState extends State<RegionOptionPageView> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: 0.8, initialPage: 0 // TODO
+    _pageController = PageController(viewportFraction: 0.80, initialPage: 0 // TODO
         );
   }
 
@@ -49,6 +49,7 @@ class _RegionOptionPageViewState extends State<RegionOptionPageView> {
       itemCount: widget.generationCodes.length,
       itemBuilder: (context, index) {
         return Container(
+          padding: const EdgeInsets.only(left: 10, right: 10),
           child: RegionOption(
             generationCode: widget.generationCodes[index],
             onRegionClicked: (generationCode) {
@@ -56,7 +57,6 @@ class _RegionOptionPageViewState extends State<RegionOptionPageView> {
               print("Clicked on generation: $generationCode");
             },
           ),
-          padding: EdgeInsets.only(left: 20, right: 20),
         );
       },
     );

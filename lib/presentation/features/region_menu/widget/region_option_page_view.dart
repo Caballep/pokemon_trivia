@@ -4,8 +4,10 @@ import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_o
 
 class RegionOptionPageView extends StatefulWidget {
   final List<String> generationCodes;
+  final Function(String generationCode) onRegionClicked;
   bool regionTransition = false;
-  RegionOptionPageView({Key? key, required this.generationCodes}) : super(key: key);
+  RegionOptionPageView({Key? key, required this.generationCodes, required this.onRegionClicked})
+      : super(key: key);
 
   @override
   State<RegionOptionPageView> createState() => _RegionOptionPageViewState();
@@ -53,8 +55,7 @@ class _RegionOptionPageViewState extends State<RegionOptionPageView> {
           child: RegionOption(
             generationCode: widget.generationCodes[index],
             onRegionClicked: (generationCode) {
-              // Handle the click event here
-              print("Clicked on generation: $generationCode");
+              widget.onRegionClicked(generationCode);
             },
           ),
         );

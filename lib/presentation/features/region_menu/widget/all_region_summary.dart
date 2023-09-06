@@ -30,7 +30,7 @@ class AllRegionSummary extends StatelessWidget {
                 children: [
                   const Spacer(flex: 1),
                   Expanded(
-                    flex: 4,
+                    flex: 3,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

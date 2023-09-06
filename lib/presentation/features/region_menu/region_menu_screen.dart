@@ -61,7 +61,12 @@ class _RegionsMenuScreenState extends State<RegionsMenuScreen> {
                           const Spacer(flex: 1),
                           Expanded(
                             flex: 18,
-                            child: RegionOptionPageView(generationCodes: data.generationsCode),
+                            child: RegionOptionPageView(
+                              generationCodes: data.generationsCode,
+                              onRegionClicked: (generationCode) {
+                                print("Hey it works!");
+                              },
+                            ),
                           ),
                         ],
                       ))

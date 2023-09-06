@@ -7,6 +7,7 @@ import 'package:pokemon_trivia/presentation/features/region_menu/widget/stars.da
 import 'package:pokemon_trivia/presentation/shared/Image_sticker.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 import 'package:pokemon_trivia/presentation/utils/color_provider.dart';
+import 'package:pokemon_trivia/presentation/utils/media_query_util.dart';
 
 class RegionOption extends StatefulWidget {
   final String generationCode;
@@ -22,6 +23,7 @@ class RegionOption extends StatefulWidget {
 }
 
 class _RegionOptionState extends State<RegionOption> {
+  final height = MediaQueryUtil.height;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RegionOptionCubit, RegionOptionState>(
@@ -34,63 +36,85 @@ class _RegionOptionState extends State<RegionOption> {
               onTap: () {
                 widget.onRegionClicked(widget.generationCode);
               },
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  RegionOptionSurface(color: color),
-                  Column(
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      MultiLineRetroText(text: data.code, color: Colors.black, fontSize: 60.0),
-                      MultiLineRetroText(text: data.name, color: Colors.white, fontSize: 35.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ChangingImageSticker(
-                              displayPokemonImageFiles: data.displayPokemonImageFiles, size: 135)
-                        ],
-                      ),
-                      Container(
-                        child: SingleLineRetroText(
-                            text: "From ${data.firstPokemonNumber} to ${data.lastPokemonNumber}",
-                            color: Colors.black),
-                        padding: EdgeInsets.only(left: 30, right: 30),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(30),
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: double.infinity,
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              MultiLineRetroText(
-                                  text: "Score: ${data.highestScore}",
-                                  color: Colors.black,
-                                  fontSize: 35.0),
-                              MultiLineRetroText(
-                                  text: "Answered: ${data.highestAnswered}",
-                                  color: Colors.black,
-                                  fontSize: 35.0),
-                              MultiLineRetroText(
-                                  text: "Streak: ${data.highestStreak}",
-                                  color: Colors.black,
-                                  fontSize: 35.0),
-                            ],
-                          ),
+              child: Column(children: [
+                Expanded(
+                    flex: 20,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        RegionOptionSurface(color: color),
+                        Column(
+                          children: [
+                            const Spacer(flex: 1),
+                            Expanded(
+                              flex: 4,
+                              child: SingleLineRetroText(text: data.code, color: Colors.black),
+                            ),
+                            Expanded(
+                                flex: 3,
+                                child: SingleLineRetroText(text: data.name, color: Colors.white)),
+                            Expanded(
+                                flex: 6,
+                                child: ChangingImageSticker(
+                                    displayPokemonImageFiles: data.displayPokemonImageFiles,
+                                    size: (height * 0.20))),
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                  child: SingleLineRetroText(
+                                      text:
+                                          "From #${data.firstPokemonNumber} to #${data.lastPokemonNumber}",
+                                      color: Colors.white),
+                                  padding: EdgeInsets.only(left: 30, right: 30),
+                                )),
+                            const Spacer(flex: 1),
+                            Expanded(
+                                flex: 6,
+                                child: Container(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: double.infinity,
+                                    color: Colors.white,
+                                    child: Container(
+                                        padding: EdgeInsets.all(10),
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                                flex: 1,
+                                                child: HighestText(
+                                                  text: 'Highest score: ',
+                                                  score: data.highestScore,
+                                                )),
+                                            Expanded(
+                                                flex: 1,
+                                                child: HighestText(
+                                                  text: 'Highest answered: ',
+                                                  score: data.highestAnswered,
+                                                )),
+                                            Expanded(
+                                                flex: 1,
+                                                child: HighestText(
+                                                  text: 'Highest streak: ',
+                                                  score: data.highestStreak,
+                                                )),
+                                          ],
+                                        )),
+                                  ),
+                                )),
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                  Container(
-                      height: 90,
-                      padding: const EdgeInsets.only(top: 50, left: 50),
-                      alignment: Alignment.bottomCenter,
-                      child: Stars(data.stars))
-                ],
-              ),
+                      ],
+                    )),
+                Expanded(
+                    flex: 3,
+                    child: Container(
+                        child: Container(
+                            color: Colors.white,
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: Stars(data.stars)))),
+                const Spacer(flex: 1),
+              ]),
+              //Container(alignment: Alignment.bottomCenter, child: Stars(data.stars))
             );
           }
           if (state is RegionOptionAvailableState) {
@@ -146,5 +170,34 @@ class RegionOptionSurface extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class HighestText extends StatelessWidget {
+  final String text;
+  final int score;
+
+  const HighestText({super.key, required this.text, required this.score});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      Expanded(
+          flex: 4,
+          child: Container(
+              alignment: Alignment.centerRight,
+              child: SingleLineRetroText(
+                text: text,
+                color: Colors.black,
+              ))),
+      Expanded(
+          flex: 1,
+          child: Container(
+              alignment: Alignment.topLeft,
+              child: SingleLineRetroText(
+                text: score.toString(),
+                color: Colors.orange,
+              ))),
+    ]);
   }
 }

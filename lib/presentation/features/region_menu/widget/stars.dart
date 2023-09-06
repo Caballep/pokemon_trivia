@@ -7,6 +7,7 @@ class Stars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildStar(0),
         _buildStar(1),

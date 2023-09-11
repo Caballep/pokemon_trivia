@@ -20,6 +20,7 @@ import 'package:pokemon_trivia/domain/use_case/game/get_coins_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/game/get_region_option_detail_model_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/game/get_region_score_model_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/game/get_regions_and_score_model_uc.dart';
+import 'package:pokemon_trivia/domain/use_case/game/unlock_region.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_app_initial_data_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_generations_uc.dart';
 import 'package:pokemon_trivia/domain/use_case/pokemon/fetch_pokemons_uc.dart';
@@ -102,13 +103,20 @@ void setupLocator() {
       getGenerationUC: locator.get(),
       getGenerationsUC: locator.get(),
       getThreeIconicPokemonImagesUC: locator.get()));
+  locator.registerFactory(() => UnlockRegionUC(
+      generationRepository: locator.get(),
+      resultHandler: locator.get(),
+      gameRepository: locator.get()));
 
   // Blocs and Cubits
   locator.registerFactory(() => SplashCubit(fetchInitialDataAndGetPokemonsUC: locator.get()));
   locator.registerFactory(
       () => TosCubit(isTosAcceptedUC: locator.get(), saveTosAcceptanceDeviceDataUC: locator.get()));
   locator.registerFactory(() => DexCubit(getAllPokemonsUC: locator.get()));
-  locator.registerFactory(
-      () => RegionMenuCubit(getRegionsAndScoresModelUC: locator.get(), getCoinsUC: locator.get()));
-  locator.registerFactory(() => RegionOptionCubit(getRegionOptionDetailModelUC: locator.get()));
+  locator.registerFactory(() => RegionMenuCubit(
+      getRegionsAndScoresModelUC: locator.get(),
+      getCoinsUC: locator.get(),
+      addCoins: locator.get()));
+  locator.registerFactory(() => RegionOptionCubit(
+      getRegionOptionDetailModelUC: locator.get(), unlockRegionUC: locator.get()));
 }

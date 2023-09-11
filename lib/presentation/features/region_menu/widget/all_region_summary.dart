@@ -8,7 +8,6 @@ class AllRegionSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final availableCoins = regionMenuData.availableCoins;
     final allRegionsTotalScore = regionMenuData.allRegionsTotalScore;
 
     final highestScoreName = regionMenuData.regionNameHighestHighestScore.key;
@@ -28,51 +27,6 @@ class AllRegionSummary extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Spacer(flex: 1),
-                  Expanded(
-                    flex: 3,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Spacer(
-                          flex: 3,
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: Container(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                          width: double.infinity,
-                                          alignment: Alignment.centerRight,
-                                          child: Column(
-                                            children: [
-                                              const Spacer(flex: 1),
-                                              Expanded(
-                                                flex: 10,
-                                                child: Image.asset('assets/images/coin_white.png'),
-                                              ),
-                                              const Spacer(flex: 1),
-                                            ],
-                                          ))),
-                                  Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                          width: double.infinity,
-                                          alignment: Alignment.centerLeft,
-                                          child: SingleLineRetroText(
-                                              text: availableCoins.toString(),
-                                              color: Colors.amberAccent)))
-                                ],
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
                   Expanded(
                       flex: 4,
                       child: Container(
@@ -166,7 +120,7 @@ class AllRegionSummary extends StatelessWidget {
                           const Spacer(flex: 1),
                         ],
                       )),
-                  const Spacer(flex: 2)
+                  const Spacer(flex: 1)
                 ],
               ))),
       Expanded(

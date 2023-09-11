@@ -5,6 +5,7 @@ import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_o
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option_state.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/stars.dart';
 import 'package:pokemon_trivia/presentation/shared/Image_sticker.dart';
+import 'package:pokemon_trivia/presentation/shared/retro_button.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 import 'package:pokemon_trivia/presentation/utils/color_provider.dart';
 import 'package:pokemon_trivia/presentation/utils/media_query_util.dart';
@@ -29,6 +30,7 @@ class _RegionOptionState extends State<RegionOption> {
     return BlocBuilder<RegionOptionCubit, RegionOptionState>(
         bloc: widget.regionOptionCubit,
         builder: (context, state) {
+          // RegionOptionReadyToPlayState ----------------
           if (state is RegionOptionReadyToPlayState) {
             final data = state.regionOptionData;
             final color = ColorProvider.getColorFromGenerationCode(data.code);
@@ -47,7 +49,7 @@ class _RegionOptionState extends State<RegionOption> {
                           children: [
                             const Spacer(flex: 1),
                             Expanded(
-                              flex: 4,
+                              flex: 3,
                               child: SingleLineRetroText(text: data.code, color: Colors.black),
                             ),
                             Expanded(
@@ -61,72 +63,170 @@ class _RegionOptionState extends State<RegionOption> {
                             Expanded(
                                 flex: 2,
                                 child: Container(
+                                  padding: const EdgeInsets.only(left: 30, right: 30),
                                   child: SingleLineRetroText(
                                       text:
                                           "From #${data.firstPokemonNumber} to #${data.lastPokemonNumber}",
                                       color: Colors.white),
-                                  padding: EdgeInsets.only(left: 30, right: 30),
                                 )),
+                            Expanded(
+                                flex: 4,
+                                child: Row(children: [
+                                  const Spacer(
+                                    flex: 1,
+                                  ),
+                                  Expanded(
+                                      flex: 3,
+                                      child: RetroButton(
+                                        color: Colors.lightGreen[500]!,
+                                        pressedColor: Colors.lightGreen[700]!,
+                                        height: height * 0.07,
+                                        text: "Start",
+                                        width: double.infinity,
+                                        iconAssetString: 'assets/images/start.png',
+                                        onTapUp: () {},
+                                      )),
+                                  const Spacer(
+                                    flex: 1,
+                                  ),
+                                ])),
                             const Spacer(flex: 1),
                             Expanded(
-                                flex: 6,
+                              flex: 10,
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                color: Colors.white,
                                 child: Container(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: double.infinity,
-                                    color: Colors.white,
-                                    child: Container(
-                                        padding: EdgeInsets.all(10),
-                                        child: Column(
-                                          children: [
-                                            Expanded(
-                                                flex: 1,
-                                                child: HighestText(
-                                                  text: 'Highest score: ',
-                                                  score: data.highestScore,
-                                                )),
-                                            Expanded(
-                                                flex: 1,
-                                                child: HighestText(
-                                                  text: 'Highest answered: ',
-                                                  score: data.highestAnswered,
-                                                )),
-                                            Expanded(
-                                                flex: 1,
-                                                child: HighestText(
-                                                  text: 'Highest streak: ',
-                                                  score: data.highestStreak,
-                                                )),
-                                          ],
-                                        )),
-                                  ),
-                                )),
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                            flex: 2,
+                                            child: HighestText(
+                                              text: 'Highest score: ',
+                                              score: data.highestScore,
+                                            )),
+                                        Expanded(
+                                            flex: 2,
+                                            child: HighestText(
+                                              text: 'Highest answered: ',
+                                              score: data.highestAnswered,
+                                            )),
+                                        Expanded(
+                                            flex: 2,
+                                            child: HighestText(
+                                              text: 'Highest streak: ',
+                                              score: data.highestStreak,
+                                            )),
+                                        const Spacer(flex: 1),
+                                        Expanded(flex: 3, child: Stars(data.stars)),
+                                        const Spacer(flex: 1),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                            const Spacer(flex: 1),
                           ],
                         ),
                       ],
                     )),
-                Expanded(
-                    flex: 3,
-                    child: Container(
-                        child: Container(
-                            color: Colors.white,
-                            padding: const EdgeInsets.only(bottom: 20),
-                            child: Stars(data.stars)))),
-                const Spacer(flex: 1),
               ]),
-              //Container(alignment: Alignment.bottomCenter, child: Stars(data.stars))
             );
           }
-          if (state is RegionOptionAvailableState) {
+          // RegionOptionAvailableState ----------------------
+          if (state is RegionOptionLockedOrAvailableState) {
             final data = state.regionOptionData;
-            final color = ColorProvider.getColorFromGenerationCode(data.code);
-            RegionOptionSurface(color: color);
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                RegionOptionSurface(color: Colors.grey[800]!),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Spacer(flex: 1),
+                    Expanded(
+                      flex: 3,
+                      child: SingleLineRetroText(text: data.code, color: Colors.grey),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: SingleLineRetroText(text: data.name, color: Colors.white),
+                    ),
+                    const Spacer(
+                      flex: 7,
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Row(children: [
+                        const Spacer(
+                          flex: 1,
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: RetroButton(
+                            color: data.unlocked ? Colors.blue[700]! : Colors.yellow[700]!,
+                            pressedColor: data.unlocked ? Colors.blue[800]! : Colors.yellow[800]!,
+                            height: height * 0.075,
+                            text: data.unlocked ? 'Download' : 'Unlock',
+                            width: double.infinity,
+                            iconAssetString: data.unlocked
+                                ? 'assets/images/download.png'
+                                : 'assets/images/confirm.png',
+                            onTapUp: () {
+                              if (data.unlocked) {
+                                // Download
+                              } else {
+                                // Purchase
+                                widget.regionOptionCubit.unlockRegion(widget.generationCode);
+                              }
+                            },
+                          ),
+                        ),
+                        const Spacer(
+                          flex: 1,
+                        ),
+                      ]),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: data.unlocked
+                          ? SingleLineRetroText(
+                              text: 'Internet is required', color: Colors.blue[500]!)
+                          : SingleLineRetroText(text: 'Unlock cost: ', color: Colors.amber[600]!),
+                    ),
+                    if (data.unlocked)
+                      const Spacer(flex: 2)
+                    else
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          children: [
+                            const Spacer(flex: 3),
+                            Expanded(
+                              flex: 1,
+                              child: Image.asset('assets/images/coin_black.png'),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: SingleLineRetroText(
+                                text: data.unlockCoinCost.toString(),
+                                color: Colors.amberAccent,
+                              ),
+                            ),
+                            const Spacer(flex: 3),
+                          ],
+                        ),
+                      ),
+                    const Spacer(
+                      flex: 7,
+                    ),
+                  ],
+                ),
+              ],
+            );
           }
-          if (state is RegionOptionLockedState) {
-            final data = state.regionOptionData;
-            final color = ColorProvider.getColorFromGenerationCode(data.code);
-            RegionOptionSurface(color: color);
-          }
+
           return const RegionOptionSurface(color: Colors.grey);
         });
   }

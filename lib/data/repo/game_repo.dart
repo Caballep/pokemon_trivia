@@ -26,6 +26,15 @@ class GameRepository {
     }
   }
 
+  Future<Result<void>> substractCoins(int amount) async {
+    try {
+      await _gameDao.subtractCoins(amount);
+      return Result.success(null);
+    } on Exception catch (e, stackTrace) {
+      return Result.error(ExceptionData(e, stackTrace));
+    }
+  }
+
   Future<Result<GenerationScoreModel>> getGameScore(String generationCode) async {
     try {
       final gameScoreResult = await _gameDao.getGameScore(generationCode);

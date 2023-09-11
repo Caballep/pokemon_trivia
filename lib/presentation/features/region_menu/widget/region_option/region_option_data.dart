@@ -2,30 +2,20 @@ import 'dart:io';
 
 import 'package:pokemon_trivia/domain/model/region_option_detail_model.dart';
 
-class RegionOptionLockedData {
-  final String code;
-  final int unlockCoinCost;
-
-  RegionOptionLockedData({required this.code, required this.unlockCoinCost});
-
-  factory RegionOptionLockedData.from(RegionOptionDetailModel detailModel) {
-    return RegionOptionLockedData(
-      code: detailModel.code,
-      unlockCoinCost: detailModel.unlockCoinCost ?? 0,
-    );
-  }
-}
-
-class RegionOptionAvailableData {
+class RegionOptionLockedOrAvailableData {
   final String code;
   final String name;
+  final int unlockCoinCost;
+  final bool unlocked;
 
-  RegionOptionAvailableData({required this.code, required this.name});
+  RegionOptionLockedOrAvailableData({required this.code, required this.unlockCoinCost, required this.name, required this.unlocked});
 
-  factory RegionOptionAvailableData.from(RegionOptionDetailModel detailModel) {
-    return RegionOptionAvailableData(
+  factory RegionOptionLockedOrAvailableData.from(RegionOptionDetailModel detailModel) {
+    return RegionOptionLockedOrAvailableData(
       code: detailModel.code,
       name: detailModel.name,
+      unlockCoinCost: detailModel.unlockCoinCost ?? 0,
+      unlocked: detailModel.unlockCoinCost == null ? true : false
     );
   }
 }

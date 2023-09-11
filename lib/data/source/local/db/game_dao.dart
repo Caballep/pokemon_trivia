@@ -9,15 +9,25 @@ class GameDao {
 
   Future<void> addCoins(int amount) async {
     final db = await pokemonTriviaDb.open();
+
+    final currentValue = await db.rawQuery('SELECT amount FROM coins WHERE id = 1');
+    int updatedAmount = amount;
+
+    if (currentValue.isNotEmpty) {
+      final currentAmount = currentValue.first['amount'] as int;
+      updatedAmount += currentAmount;
+    }
+
     await db.execute('''
-      INSERT OR REPLACE INTO coins (id, amount) VALUES (1, ?)
-    ''', [amount]);
+    INSERT OR REPLACE INTO coins (id, amount) VALUES (1, ?)
+  ''', [updatedAmount]);
+
     db.close();
   }
 
   Future<void> subtractCoins(int amount) async {
-    final db = await pokemonTriviaDb.open();
     final currentAmount = await getCoins();
+    final db = await pokemonTriviaDb.open();
     final newAmount = (currentAmount - amount).clamp(0, double.infinity).toInt();
     await db.execute('''
       INSERT OR REPLACE INTO coins (id, amount) VALUES (1, ?)
@@ -29,6 +39,7 @@ class GameDao {
   Future<int> getCoins() async {
     final db = await pokemonTriviaDb.open();
     final result = await db.rawQuery('SELECT amount FROM coins WHERE id = 1 LIMIT 1');
+    db.close();
     if (result.isNotEmpty) {
       return result.first['amount'] as int;
     } else {

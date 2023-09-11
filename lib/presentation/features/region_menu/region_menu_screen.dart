@@ -4,9 +4,8 @@ import 'package:pokemon_trivia/locator.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/region_menu_cubit.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/region_menu_states.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/all_region_summary.dart';
-import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option.dart';
+import 'package:pokemon_trivia/presentation/features/region_menu/widget/coin_count.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option_page_view.dart';
-import 'package:pokemon_trivia/presentation/shared/retro_button.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 import 'package:pokemon_trivia/presentation/utils/media_query_util.dart';
 
@@ -28,7 +27,7 @@ class _RegionsMenuScreenState extends State<RegionsMenuScreen> {
     return Scaffold(
         body: SafeArea(
       child: Container(
-        color: Colors.grey[200],
+        color: Colors.grey[300],
         child: BlocBuilder<RegionMenuCubit, RegionMenuState>(
           bloc: widget._regionMenuCubit,
           builder: (context, state) {
@@ -47,18 +46,43 @@ class _RegionsMenuScreenState extends State<RegionsMenuScreen> {
 
               return Column(
                 children: [
-                  Expanded(flex: 2, child: AllRegionSummary(regionMenuData: data)),
                   Expanded(
-                      flex: 5,
+                      flex: 1,
+                      child: Container(
+                          color: Colors.black87,
+                          child: Row(children: [
+                            const Spacer(flex: 5),
+                            Expanded(
+                                flex: 1,
+                                child: CoinCount(
+                                  availableCoins: data.availableCoins,
+                                  onTapFiveTimes: () {
+                                    widget._regionMenuCubit.fireCoinEasterEgg();
+                                  },
+                                )),
+                          ]))),
+                  Expanded(flex: 8, child: AllRegionSummary(regionMenuData: data)),
+                  Expanded(
+                      flex: 20,
                       child: Column(
                         children: [
+                          const Spacer(
+                            flex: 1,
+                          ),
                           Expanded(
-                              flex: 2,
-                              child: Container(
-                                  padding: const EdgeInsets.only(left: 20, right: 20),
-                                  child: SingleLineRetroText(
-                                      text: "Tap on a region to start", color: Colors.black))),
-                          const Spacer(flex: 1),
+                              flex: 3,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                      padding: const EdgeInsets.only(left: 26, right: 26),
+                                      child: SingleLineRetroText(
+                                          text: "Tap on a region to start: ", color: Colors.white)),
+                                  Container(
+                                      padding: const EdgeInsets.only(left: 30, right: 30),
+                                      child: SingleLineRetroText(
+                                          text: "Tap on a region to start: ", color: Colors.black))
+                                ],
+                              )),
                           Expanded(
                             flex: 18,
                             child: RegionOptionPageView(

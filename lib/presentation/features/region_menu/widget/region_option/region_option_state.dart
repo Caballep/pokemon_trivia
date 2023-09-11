@@ -4,17 +4,10 @@ abstract class RegionOptionState {}
 
 class RegionOptionInitialState extends RegionOptionState {}
 
+class RegionOptionLockedOrAvailableState extends RegionOptionState {
+  final RegionOptionLockedOrAvailableData regionOptionData;
 
-class RegionOptionLockedState extends RegionOptionState {
-  final RegionOptionLockedData regionOptionData;
-
-  RegionOptionLockedState(this.regionOptionData);
-}
-
-class RegionOptionAvailableState extends RegionOptionState {
-  final RegionOptionAvailableData regionOptionData;
-
-  RegionOptionAvailableState(this.regionOptionData);
+  RegionOptionLockedOrAvailableState(this.regionOptionData);
 }
 
 class RegionOptionReadyToPlayState extends RegionOptionState {

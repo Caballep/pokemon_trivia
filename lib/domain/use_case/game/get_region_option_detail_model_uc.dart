@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:pokemon_trivia/domain/helper/generation_cost_helper.dart';
 import 'package:pokemon_trivia/domain/helper/outcome.dart';
 import 'package:pokemon_trivia/domain/model/generation_model.dart';
 import 'package:pokemon_trivia/domain/model/region_option_detail_model.dart';
@@ -38,12 +39,8 @@ class GetRegionOptionDetailModelUC {
 
     // When locked
     if (generationModel.accessState == GenerationAccessState.locked) {
-      final availableGenerationsCount = generationModels
-          .where((model) => model.accessState != GenerationAccessState.locked)
-          .length;
-      final costOfNextGeneration = 7 + (availableGenerationsCount * 3);
-      final result =
-          RegionOptionDetailModel.from(generationModel, null, null, costOfNextGeneration);
+      final generationCost = GenerationCostHelper.getCostToUnlock(generationCode);
+      final result = RegionOptionDetailModel.from(generationModel, null, null, generationCost);
       return SuccessOutcome(result);
     }
 

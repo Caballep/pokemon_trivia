@@ -2,7 +2,6 @@ import 'package:pokemon_trivia/domain/model/regions_menu_model.dart';
 
 // This represents the data that will be used to feed the RegionMenuScreen
 class RegionMenuData {
-  final int availableCoins;
   final int allRegionsTotalScore;
   final MapEntry<String, int> regionNameHighestHighestScore;
   final MapEntry<String, int> regionNameHighestHighestStreak;
@@ -10,7 +9,6 @@ class RegionMenuData {
   final List<String> generationsCode;
 
   RegionMenuData({
-    required this.availableCoins,
     required this.allRegionsTotalScore,
     required this.regionNameHighestHighestScore,
     required this.regionNameHighestHighestStreak,
@@ -19,11 +17,9 @@ class RegionMenuData {
   });
 
   factory RegionMenuData.from(
-    RegionsAndScoresModel regionsAndScoresModel,
-    int coins,
+    RegionsAndScoresModel regionsAndScoresModel
   ) {
     return RegionMenuData(
-      availableCoins: coins,
       allRegionsTotalScore: regionsAndScoresModel.allRegionsTotalScore,
       regionNameHighestHighestScore: regionsAndScoresModel.regionNameHighestHighestScore,
       regionNameHighestHighestStreak: regionsAndScoresModel.regionNameHighestHighestStreak,

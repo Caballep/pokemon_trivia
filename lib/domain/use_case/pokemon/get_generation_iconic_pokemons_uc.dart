@@ -29,6 +29,11 @@ class GetThreeIconicPokemonImagesUC {
     final generation = getGenerationResult.data!;
     var pokemonNumber = generation.startsWith;
 
+    if (generationCode == 'V') {
+      //Unova is an exceptional region, first pokemon is not part of the three starter pokemons and needs to be skipped.
+      pokemonNumber += 1;
+    }
+
     for (int i = 0; i < 3; i++) {
       final getPokemonResult = await _pokemonRepository.getPokemon(pokemonNumber);
       final getPokemonResultError = _resultHandler.handle(getPokemonResult);

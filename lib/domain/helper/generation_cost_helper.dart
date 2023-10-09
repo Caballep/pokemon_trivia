@@ -2,15 +2,15 @@ class GenerationCostHelper {
   static int getCostToUnlock(String generationCode) {
     final Map<String, int> costMap = {
       "II": 9,
-      "III": 10,
-      "IV": 12,
-      "V": 15,
-      "VI": 19,
-      "VII": 24,
-      "VIII": 30,
-      "IX": 37,
+      "III": 12,
+      "IV": 16,
+      "V": 21,
+      "VI": 27,
+      "VII": 34,
+      "VIII": 42,
+      "IX": 51,
     };
 
-    return costMap[generationCode] ?? 45;
+    return costMap[generationCode] ?? 51;
   }
 }

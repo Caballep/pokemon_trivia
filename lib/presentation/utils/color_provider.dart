@@ -28,26 +28,24 @@ class ColorProvider {
 
   static Color getColorFromGenerationCode(String generationCode) {
     final Map<String, Color> colorMap = {
-      "I": const Color(0xFFE57373), // Red
+      "I": const Color.fromARGB(255, 228, 105, 105), // Red
       "II": const Color(0xFFFF8A65), // Deep Orange
       "III": const Color(0xFFFFD54F), // Amber
-      "IV": const Color(0xFF2196F3), // Blue
-      "V": const Color(0xFF9C27B0), // Purple
-      "VI": const Color(0xFF9575CD), // Light Blue
-      "VII": const Color(0xFF4DB6AC), // Teal
-      "VIII": const Color(0xFFDCE775), // Lime
-      "IX": const Color(0xFFAED581), // Light Green
-      "X": const Color(0xFF03A9F4), // Light Blue
-      "XI": const Color(0xFFE91E63), // Pink
-      "XII": const Color(0xFF795548), // Brown
-      "XIII": const Color(0xFF9E9E9E), // Grey
-      "XIV": const Color(0xFFFFC107), // Yellow
-      "XV": const Color(0xFF8BC34A), // Light Green
-      "XVI": const Color(0xFFEF5350), // Red
-      "XVII": const Color(0xFFFF9800), // Orange
-      "XVIII": const Color(0xFFCDDC39), // Lime Green
-      "XIX": const Color(0xFF00BCD4), // Cyan
-      "XX": const Color(0xFF8E24AA), // Purple
+      "IV": const Color(0xFFAED581), // Light Green
+      "V": const Color(0xFF4DB6AC), // Teal
+      "VI": const Color(0xFF2196F3), // Blue
+      "VII": const Color.fromARGB(255, 134, 82, 225), // Light Blue
+      "VIII": const Color(0xFF9C27B0), // Purple
+      "IX": const Color(0xFF795548), // Brown
+      "X": const Color(0xFFE57373), // Red
+      "XI": const Color(0xFFFF8A65), // Deep Orange
+      "XII": const Color(0xFFFFD54F), // Amber
+      "XIII": const Color(0xFFAED581), // Light Green
+      "XIV": const Color(0xFF4DB6AC), // Teal
+      "XV": const Color(0xFF2196F3), // Blue
+      "XVI": const Color.fromARGB(255, 134, 82, 225), // Light Blue
+      "XVII": const Color(0xFF9C27B0), // Purple
+      "XVIII": const Color(0xFF795548), // Brown
     };
 
     return colorMap[generationCode] ?? Colors.black;

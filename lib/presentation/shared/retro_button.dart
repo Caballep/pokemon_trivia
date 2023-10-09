@@ -39,6 +39,8 @@ class _RetroButtonState extends State<RetroButton> {
     final textBottomPadding = widget.height * 0.1;
     final pressedButtonBottomPadding = widget.height * 0.025;
     final buttonBottomPadding = widget.height * 0.05;
+    final pressedButtonPaddingIcon = widget.height * 0.025;
+    final buttonPaddingIcon = widget.height * 0.05;
     final iconSize = widget.height * 0.5;
     final textLeftPadding = widget.height * 0.1;
     final textRightPadding = widget.height * 0.25;
@@ -96,6 +98,11 @@ class _RetroButtonState extends State<RetroButton> {
                       child: Container(
                           width: iconSize,
                           height: iconSize,
+                          padding: isButtonPressed
+                              ? EdgeInsets.only(
+                                  top: buttonPaddingIcon, bottom: pressedButtonPaddingIcon)
+                              : EdgeInsets.only(
+                                  top: pressedButtonPaddingIcon, bottom: buttonPaddingIcon),
                           child: Image.asset(widget.iconAssetString)),
                     ),
                   ),

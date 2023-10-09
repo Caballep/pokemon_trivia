@@ -9,16 +9,10 @@ import 'package:pokemon_trivia/presentation/features/region_menu/region_menu_sta
 
 class RegionMenuCubit extends Cubit<RegionMenuState> {
   final GetRegionsAndScoresModelUC _getRegionsAndScoresModelUC;
-  final AddCoinsUC _addCoinsUC;
-  final GetCoinsUC _getCoinsUC;
 
   RegionMenuCubit(
-      {required GetRegionsAndScoresModelUC getRegionsAndScoresModelUC,
-      required GetCoinsUC getCoinsUC,
-      required AddCoinsUC addCoins}) // THIS SHOULD NOT BE A UC, but be part of purchase UC
+      {required GetRegionsAndScoresModelUC getRegionsAndScoresModelUC })
       : _getRegionsAndScoresModelUC = getRegionsAndScoresModelUC,
-        _getCoinsUC = getCoinsUC,
-        _addCoinsUC = addCoins,
         super(RegionMenuInitialState());
 
   Future<void> getRegionsMenuModel() async {
@@ -29,19 +23,9 @@ class RegionMenuCubit extends Cubit<RegionMenuState> {
     }
     final regionsAndScoreModel = (getRegionsAndScoresModelUCOutcome as SuccessOutcome).data;
 
-    final getGoinsUCOutcome = await _getCoinsUC.invoke();
-    if (getGoinsUCOutcome is ErrorOutcome) {
-      emit(RegionMenuErrorState("Quack!"));
-      return;
-    }
-    final coins = (getGoinsUCOutcome as SuccessOutcome).data;
-
-    final regionMenuData = RegionMenuData.from(regionsAndScoreModel, coins);
+    final regionMenuData = RegionMenuData.from(regionsAndScoreModel);
 
     emit(RegionMenuLoadedState(regionMenuData));
   }
-
-  Future<void> fireCoinEasterEgg() async {
-    await _addCoinsUC.invoke(999);
-  }
+  
 }

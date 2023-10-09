@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokemon_trivia/locator.dart';
+import 'package:pokemon_trivia/presentation/features/game/game_screen.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option_cubit.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option_state.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/stars.dart';
+import 'package:pokemon_trivia/presentation/features/splash/splash_screen.dart';
 import 'package:pokemon_trivia/presentation/shared/Image_sticker.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_button.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
@@ -34,105 +36,104 @@ class _RegionOptionState extends State<RegionOption> {
           if (state is RegionOptionReadyToPlayState) {
             final data = state.regionOptionData;
             final color = ColorProvider.getColorFromGenerationCode(data.code);
-            return GestureDetector(
-              onTap: () {
-                widget.onRegionClicked(widget.generationCode);
-              },
-              child: Column(children: [
-                Expanded(
-                    flex: 20,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        RegionOptionSurface(color: color),
-                        Column(
-                          children: [
-                            const Spacer(flex: 1),
-                            Expanded(
+            return Column(children: [
+              Expanded(
+                  flex: 20,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      RegionOptionSurface(color: color),
+                      Column(
+                        children: [
+                          const Spacer(flex: 1),
+                          Expanded(
+                            flex: 3,
+                            child: SingleLineRetroText(text: data.code, color: Colors.black),
+                          ),
+                          Expanded(
                               flex: 3,
-                              child: SingleLineRetroText(text: data.code, color: Colors.black),
-                            ),
-                            Expanded(
-                                flex: 3,
-                                child: SingleLineRetroText(text: data.name, color: Colors.white)),
-                            Expanded(
-                                flex: 6,
-                                child: ChangingImageSticker(
-                                    displayPokemonImageFiles: data.displayPokemonImageFiles,
-                                    size: (height * 0.20))),
-                            Expanded(
-                                flex: 2,
-                                child: Container(
-                                  padding: const EdgeInsets.only(left: 30, right: 30),
-                                  child: SingleLineRetroText(
-                                      text:
-                                          "From #${data.firstPokemonNumber} to #${data.lastPokemonNumber}",
-                                      color: Colors.white),
-                                )),
-                            Expanded(
-                                flex: 4,
-                                child: Row(children: [
-                                  const Spacer(
-                                    flex: 1,
-                                  ),
-                                  Expanded(
-                                      flex: 3,
-                                      child: RetroButton(
-                                        color: Colors.lightGreen[500]!,
-                                        pressedColor: Colors.lightGreen[700]!,
-                                        height: height * 0.07,
-                                        text: "Start",
-                                        width: double.infinity,
-                                        iconAssetString: 'assets/images/start.png',
-                                        onTapUp: () {},
-                                      )),
-                                  const Spacer(
-                                    flex: 1,
-                                  ),
-                                ])),
-                            const Spacer(flex: 1),
-                            Expanded(
-                              flex: 10,
+                              child: SingleLineRetroText(text: data.name, color: Colors.white)),
+                          Expanded(
+                              flex: 6,
+                              child: ChangingImageSticker(
+                                  displayPokemonImageFiles: data.displayPokemonImageFiles,
+                                  size: (height * 0.18))),
+                          Expanded(
+                              flex: 2,
                               child: Container(
-                                alignment: Alignment.center,
-                                width: double.infinity,
-                                color: Colors.white,
-                                child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                            flex: 2,
-                                            child: HighestText(
-                                              text: 'Highest score: ',
-                                              score: data.highestScore,
-                                            )),
-                                        Expanded(
-                                            flex: 2,
-                                            child: HighestText(
-                                              text: 'Highest answered: ',
-                                              score: data.highestAnswered,
-                                            )),
-                                        Expanded(
-                                            flex: 2,
-                                            child: HighestText(
-                                              text: 'Highest streak: ',
-                                              score: data.highestStreak,
-                                            )),
-                                        const Spacer(flex: 1),
-                                        Expanded(flex: 3, child: Stars(data.stars)),
-                                        const Spacer(flex: 1),
-                                      ],
+                                padding: const EdgeInsets.only(left: 30, right: 30),
+                                child: SingleLineRetroText(
+                                    text:
+                                        "From #${data.firstPokemonNumber} to #${data.lastPokemonNumber}",
+                                    color: Colors.white),
+                              )),
+                          Expanded(
+                              flex: 4,
+                              child: Row(children: [
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                Expanded(
+                                    flex: 3,
+                                    child: RetroButton(
+                                      color: Colors.lightGreen[500]!,
+                                      pressedColor: Colors.lightGreen[700]!,
+                                      height: height * 0.07,
+                                      text: "Start",
+                                      width: double.infinity,
+                                      iconAssetString: 'assets/images/start.png',
+                                      onTapUp: () {
+                                        // display the widget gere
+                                        _navigateToGameScreen(widget.generationCode);
+                                        
+                                      },
                                     )),
-                              ),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                              ])),
+                          const Spacer(flex: 1),
+                          Expanded(
+                            flex: 10,
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              color: Colors.white,
+                              child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                          flex: 2,
+                                          child: HighestText(
+                                            text: 'Highest score: ',
+                                            score: data.highestScore,
+                                          )),
+                                      Expanded(
+                                          flex: 2,
+                                          child: HighestText(
+                                            text: 'Highest answered: ',
+                                            score: data.highestAnswered,
+                                          )),
+                                      Expanded(
+                                          flex: 2,
+                                          child: HighestText(
+                                            text: 'Highest streak: ',
+                                            score: data.highestStreak,
+                                          )),
+                                      const Spacer(flex: 1),
+                                      Expanded(flex: 3, child: Stars(data.stars)),
+                                      const Spacer(flex: 1),
+                                    ],
+                                  )),
                             ),
-                            const Spacer(flex: 1),
-                          ],
-                        ),
-                      ],
-                    )),
-              ]),
-            );
+                          ),
+                          const Spacer(flex: 1),
+                        ],
+                      ),
+                    ],
+                  )),
+            ]);
           }
           // RegionOptionAvailableState ----------------------
           if (state is RegionOptionLockedOrAvailableState) {
@@ -175,7 +176,7 @@ class _RegionOptionState extends State<RegionOption> {
                                 : 'assets/images/confirm.png',
                             onTapUp: () {
                               if (data.unlocked) {
-                                // Download
+                                _navigateToSplashScreen(widget.generationCode);
                               } else {
                                 // Purchase
                                 widget.regionOptionCubit.unlockRegion(widget.generationCode);
@@ -229,6 +230,23 @@ class _RegionOptionState extends State<RegionOption> {
 
           return const RegionOptionSurface(color: Colors.grey);
         });
+  }
+
+  void _navigateToSplashScreen(String generationCode) {
+    Future.delayed(Duration.zero, () {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => SplashScreen(regionCode: generationCode)),
+        (route) => false,
+      );
+    });
+  }
+
+  void _navigateToGameScreen(String generationCode) {
+    Future.delayed(Duration.zero, () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => GameScreen(regionCode: generationCode)));
+    });
   }
 }
 

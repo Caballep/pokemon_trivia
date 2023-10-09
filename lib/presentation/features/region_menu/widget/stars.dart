@@ -17,13 +17,36 @@ class Stars extends StatelessWidget {
   }
 
   Widget _buildStar(int index) {
-    double starValue = number / 2;
-    if (starValue >= index) {
-      return Image.asset('assets/images/star_full.png');
-    } else if (starValue >= index / 2) {
-      return Image.asset('assets/images/star_half.png');
-    } else {
+    if (index == 0) {
+      if (number >= 2) {
+        return Image.asset('assets/images/star_full.png');
+      }
+      if (number >= 1) {
+        return Image.asset('assets/images/star_half.png');
+      }
       return Image.asset('assets/images/star_empty.png');
     }
+
+    if (index == 1) {
+      if (number >= 4) {
+        return Image.asset('assets/images/star_full.png');
+      }
+      if (number >= 3) {
+        return Image.asset('assets/images/star_half.png');
+      }
+      return Image.asset('assets/images/star_empty.png');
+    }
+
+    if (index == 2) {
+      if (number >= 6) {
+        return Image.asset('assets/images/star_full.png');
+      }
+      if (number >= 5) {
+        return Image.asset('assets/images/star_half.png');
+      }
+      return Image.asset('assets/images/star_empty.png');
+    }
+
+    return Image.asset('assets/images/star_empty.png');
   }
 }

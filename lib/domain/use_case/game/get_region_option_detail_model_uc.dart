@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:pokemon_trivia/domain/helper/generation_cost_helper.dart';
 import 'package:pokemon_trivia/domain/helper/outcome.dart';
+import 'package:pokemon_trivia/domain/helper/stars_calculator.dart';
 import 'package:pokemon_trivia/domain/model/generation_model.dart';
 import 'package:pokemon_trivia/domain/model/region_option_detail_model.dart';
 import 'package:pokemon_trivia/domain/model/region_score_model.dart';
@@ -69,7 +70,7 @@ class GetRegionOptionDetailModelUC {
     final result = RegionOptionDetailModel.from(
         generationModel, generationScoreModel, threeIconicPokemonImages, null);
 
-    result.stars = 1;
+    result.stars = StarsCalculator.getStarsByScore(result.highestScore);
 
     return SuccessOutcome(result);
   }

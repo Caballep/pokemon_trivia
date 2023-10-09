@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option/region_option.dart';
+import 'package:flutter/material.dart';
 
 class RegionOptionPageView extends StatefulWidget {
   final List<String> generationCodes;
@@ -19,74 +19,38 @@ class _RegionOptionPageViewState extends State<RegionOptionPageView> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: 0.80, initialPage: 0 // TODO
-        );
+    final positionBeforeAnimation = widget.generationCodes.length;
+    _pageController = PageController(
+        viewportFraction: 0.80, initialPage: positionBeforeAnimation, keepPage: true);
   }
 
   @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-  void _pageListener() {
-    if (_pageController.page == _pageController.page!.roundToDouble()) {
-      // Page has snapped to an integer value, transition has ended
-      setState(() {
-        widget.regionTransition = false;
-      });
-    } else {
-      // Page is transitioning
-      setState(() {
-        widget.regionTransition = true;
-      });
-    }
+    // You can add a delay before auto-scrolling, if needed.
+    Future.delayed(Duration(milliseconds: 0), () {
+      // Scroll to the left beyond position 0 (page 0).
+      _pageController.animateToPage(0,
+          duration: const Duration(milliseconds: 1000), curve: Curves.easeOut);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
+      physics: const BouncingScrollPhysics(),
       controller: _pageController,
-      //physics: const CustomPageScrollPhysics(),
       itemCount: widget.generationCodes.length,
       itemBuilder: (context, index) {
         return Container(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: RegionOption(
             generationCode: widget.generationCodes[index],
-            onRegionClicked: (generationCode) {
-              widget.onRegionClicked(generationCode);
-            },
+            onRegionClicked: (String generationCode) {},
           ),
         );
       },
     );
-  }
-}
-
-class CustomPageScrollPhysics extends ScrollPhysics {
-  const CustomPageScrollPhysics({ScrollPhysics? parent}) : super(parent: parent);
-
-  @override
-  CustomPageScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return CustomPageScrollPhysics(parent: buildParent(ancestor));
-  }
-
-  @override
-  Simulation? createBallisticSimulation(ScrollMetrics position, double velocity) {
-    if (velocity.abs() < 500.0) {
-      // Simulate a snap when velocity is near 0
-      return SpringSimulation(
-        SpringDescription.withDampingRatio(
-          mass: 0.5,
-          stiffness: 100.0,
-          ratio: 0.5,
-        ),
-        position.pixels,
-        position.pixels + velocity,
-        0.0,
-      );
-    }
-    return super.createBallisticSimulation(position, velocity);
   }
 }

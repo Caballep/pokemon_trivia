@@ -27,5 +27,8 @@ enum Errors {
 
   // Flow
   nullItem,
-  errorInItem
+  errorInItem,
+
+  // Game wise
+  notEnoughCoins
 }

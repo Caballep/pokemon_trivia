@@ -10,13 +10,16 @@ class AllRegionSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final allRegionsTotalScore = regionMenuData.allRegionsTotalScore;
 
-    final highestScoreName = regionMenuData.regionNameHighestHighestScore.key;
+    var highestScoreName = regionMenuData.regionNameHighestHighestScore.key;
+    if (highestScoreName.isEmpty) highestScoreName = '~';
     final highestScoreValue = regionMenuData.regionNameHighestHighestScore.value;
 
-    final highestAnsweredName = regionMenuData.regionNameHighestHighestAnswered.key;
+    var highestAnsweredName = regionMenuData.regionNameHighestHighestAnswered.key;
+    if (highestAnsweredName.isEmpty) highestAnsweredName = '~';
     final highestAnsweredValue = regionMenuData.regionNameHighestHighestAnswered.value;
 
-    final highestStreakName = regionMenuData.regionNameHighestHighestStreak.key;
+    var highestStreakName = regionMenuData.regionNameHighestHighestStreak.key;
+    if (highestStreakName.isEmpty) highestStreakName = '~';
     final highestStreakValue = regionMenuData.regionNameHighestHighestStreak.value;
 
     return Column(children: [

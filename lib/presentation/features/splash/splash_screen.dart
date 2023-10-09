@@ -14,8 +14,8 @@ class SplashScreen extends StatelessWidget {
   final SplashCubit splashCubit = locator.get<SplashCubit>();
   final height = MediaQueryUtil.height;
 
-  SplashScreen({Key? key}) : super(key: key) {
-    splashCubit.fetchPokemonData();
+  SplashScreen({Key? key, String? regionCode}) : super(key: key) {
+    splashCubit.fetchPokemonData(regionCode);
   }
 
   @override

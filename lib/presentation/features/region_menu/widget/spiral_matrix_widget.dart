@@ -2,6 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class SpiralMatrixWidget extends StatefulWidget {
+  final Function? onAnimationCompleted;
+
+  SpiralMatrixWidget({Key? key, this.onAnimationCompleted}) : super(key: key);
+
   @override
   _SpiralMatrixWidgetState createState() => _SpiralMatrixWidgetState();
 }
@@ -47,6 +51,11 @@ class _SpiralMatrixWidgetState extends State<SpiralMatrixWidget> {
 
         matrixColors[currentY][currentX] = Colors.white;
       });
+    }
+
+    // Animation is completed, call the callback
+    if (widget.onAnimationCompleted != null) {
+      widget.onAnimationCompleted!();
     }
   }
 

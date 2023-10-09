@@ -40,8 +40,7 @@ class UnlockRegionUC {
 
       final substractCoinsResult = await _gameRepository.substractCoins(generationCost);
 
-      final substractCoinsResultError =
-          _resultHandler.handle(substractCoinsResult, errorWhenNull: true);
+      final substractCoinsResultError = _resultHandler.handle(substractCoinsResult);
       if (substractCoinsResultError != null) {
         return Future.value(ErrorOutcome(substractCoinsResultError));
       }

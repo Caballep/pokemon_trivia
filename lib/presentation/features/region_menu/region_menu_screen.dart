@@ -5,6 +5,7 @@ import 'package:pokemon_trivia/presentation/features/region_menu/region_menu_cub
 import 'package:pokemon_trivia/presentation/features/region_menu/region_menu_states.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/all_region_summary.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/coin/coin_count.dart';
+import 'package:pokemon_trivia/presentation/features/region_menu/widget/coin/coin_cubit.dart';
 import 'package:pokemon_trivia/presentation/features/region_menu/widget/region_option_page_view.dart';
 import 'package:pokemon_trivia/presentation/shared/retro_text.dart';
 import 'package:pokemon_trivia/presentation/utils/media_query_util.dart';
@@ -12,9 +13,11 @@ import 'package:pokemon_trivia/presentation/utils/media_query_util.dart';
 class RegionsMenuScreen extends StatefulWidget {
   final height = MediaQueryUtil.height;
   final RegionMenuCubit _regionMenuCubit = locator.get<RegionMenuCubit>();
+  final CoinCubit _coinCubit = locator.get<CoinCubit>();
 
   RegionsMenuScreen({Key? key}) : super(key: key) {
     _regionMenuCubit.getRegionsMenuModel();
+    _coinCubit.getCoins();
   }
 
   @override
@@ -55,12 +58,24 @@ class _RegionsMenuScreenState extends State<RegionsMenuScreen> {
                             color: Colors.black26,
                           ),
                         ),
-                        child: Row(
+child: Row(
                           children: [
                             const Spacer(flex: 5),
                             Expanded(
                               flex: 1,
-                              child: CoinCount()
+                              child: BlocBuilder<CoinCubit, CoinState>(
+                                bloc: widget._coinCubit,
+                                builder: (context, state) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      widget._coinCubit.handleEaterEggClick();
+                                    },
+                                    child: (state is CoinResultState)
+                                        ? CoinCount(state.coins) 
+                                        : CoinCount(0), 
+                                  );
+                                },
+                              ),
                             ),
                           ],
                         ),
